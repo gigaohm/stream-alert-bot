@@ -1,0 +1,21 @@
+credentials:
+        twitch:
+                client_id: "test"
+                secret: "test"
+        twitter:
+                consumer_key: "test"
+                consumer_secret: "test"
+                access_key: "test"
+                access_secret: "test"
+streamers:
+# You can provide the following info:
+# Twitch User (required)
+# Twitter Handle (optional)
+# Name (optional)
+- twitch_user: "a_seagull"
+- twitch_user: "a_turtle"
+  name: "A Turtle"
+- twitch_user: "a_pangolin"
+  twitter_handle: "@pangolin"
+  name: "A Pangolin"
+
