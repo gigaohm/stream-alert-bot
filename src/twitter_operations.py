@@ -10,4 +10,7 @@ def connect_to_twitter(consumer_key, consumer_secret, access_key,
 
 
 def post_twitter_status(twitter_connection, message):
-    twitter_connection.PostUpdate(message)
+    try:
+        twitter_connection.PostUpdate(message)
+    except twitter.TwitterError as tterror:
+        print(tterror)
