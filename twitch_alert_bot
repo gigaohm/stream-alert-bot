@@ -1,4 +1,4 @@
-#!./bin/python3
+#!/usr/bin/env python
 
 from src import yaml_operations as yop, twitch_operations as twitch_op, \
         functionality as f
@@ -16,8 +16,8 @@ if __name__ == "__main__":
     streamers_info_dict = f.generate_streamers_info_dict(streamers)
 
     # Authenticate on twitch
-    twitch = twitch_op.connectToTwitch(twitch_creds["client_id"],
-                                      twitch_creds["secret"])
+    twitch = twitch_op.connect_to_twitch(twitch_creds["client_id"],
+                                         twitch_creds["secret"])
 
     # Initial state
     streamers_info = twitch_op.get_all_streamers_info(twitch, streamers)
@@ -25,10 +25,13 @@ if __name__ == "__main__":
 
     # Poll channel changes
     while True:
-        current_live_streams = twitch_op.get_live_streams(twitch, streamers_info)
-        f.check_finished_streams(previous_live_streams, current_live_streams)
-        f.check_started_streams(twitter_creds, previous_live_streams,
-                                 current_live_streams, streamers_info_dict)
-        previous_live_streams = current_live_streams
+        try:
+            current_live_streams = twitch_op.get_live_streams(twitch, streamers_info)
+            f.check_finished_streams(previous_live_streams, current_live_streams)
+            f.check_started_streams(twitter_creds, previous_live_streams,
+                                     current_live_streams, streamers_info_dict)
+            previous_live_streams = current_live_streams
+        except Exception as e:
+            print("Error: {}".format(e))
 
         time.sleep(polling_interval)
