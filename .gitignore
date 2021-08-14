@@ -1,6 +1,8 @@
 **/__pycache__
 **/__init__.py
 bin/*
+build/*
+dist/*
 lib/*
 result/*
 twitch_alert_bot.egg-info/*
