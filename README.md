@@ -22,7 +22,7 @@ This bot will indicate which streamers are live on Twitch and announce them on T
 ### Nix
 
 - Run `nix-shell`
-- If you want to build the application, run `nix-build`
+- If you want to build the application (not recommended), run `nix-build`
 
 ## Thanks to
 - [Roger Zanoni](https://gitlab.com/roger.zanoni)
