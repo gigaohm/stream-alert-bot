@@ -1,0 +1,10 @@
+with import ./pkgs.nix { };
+let
+  requirements = import ./requirements.nix;
+  customPython = requirements.python.buildEnv.override {
+    extraLibs = requirements.base ++ requirements.tests ++ requirements.dev;
+  };
+in
+mkShell {
+    buildInputs = [ customPython ];
+}
