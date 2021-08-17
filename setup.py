@@ -6,6 +6,9 @@ with open('README.md') as f:
 with open('LICENSE') as f:
     license = f.read()
 
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
+
 setup(
     name="twitch-alert-bot",
     version="0.1.0",
@@ -16,7 +19,7 @@ setup(
     url="https://gitlab.com/WolfangAukang/twitch-alert-bot",
     license=license,
     long_description_content_type="text/markdown",
-    install_requires=["python-twitter", "PyYAML", "twitchAPI"],
+    install_requires=requirements,
     packages=find_packages(),
     entry_points={
         "console_scripts": [ "twitch_alert_bot=tab:main" ]
