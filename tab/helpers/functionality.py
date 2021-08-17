@@ -1,4 +1,4 @@
-from . import twitter_operations as twitter_op
+from tab.api import connect_to_twitter, post_twitter_status
 
 
 def generate_streamers_info_dict(streamers):
@@ -14,11 +14,11 @@ def generate_tweet_message(streamer_name, twitter_handle, title, twitch_user):
 
 
 def post_to_twitter(twitter_creds, message):
-	twitter = twitter_op.connect_to_twitter(twitter_creds["consumer_key"],
+	twitter = connect_to_twitter(twitter_creds["consumer_key"],
                                             twitter_creds["consumer_secret"],
                                             twitter_creds["access_key"],
                                             twitter_creds["access_secret"])
-	twitter_op.post_twitter_status(twitter, message)
+	post_twitter_status(twitter, message)
 
 
 # TODO: Use this function for logging

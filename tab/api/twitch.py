@@ -1,10 +1,10 @@
 from twitchAPI.twitch import Twitch
 from twitchAPI.webhook import TwitchWebHook
-import logging
 
 
 def connect_to_twitch(client_id, secret):
     twitch = Twitch(client_id, secret)
+    # TODO: Add try-catch
     twitch.authenticate_app([])
     return twitch
 
@@ -12,6 +12,7 @@ def connect_to_twitch(client_id, secret):
 def get_all_streamers_info(twitch_connection, streamers):
     # Get all streamers info
     twitch_users = [user["twitch_user"] for user in streamers]
+    # TODO: Add try-catch
     streamers_info = twitch_connection.get_users(logins=twitch_users)
     return streamers_info["data"]
 
@@ -20,6 +21,7 @@ def get_live_streams(twitch_connection, users_info):
     live_streams = {}
     for user in users_info:
         uid = user["id"]
+        # TODO: Add try-catch
         live_info_full = twitch_connection.get_streams(user_id=uid)
         live_info = live_info_full["data"]
         if len(live_info):
