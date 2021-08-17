@@ -9,7 +9,7 @@ This bot will indicate which streamers are live on Twitch and announce them on T
   - For Twitter, you will need the access token and secrets with Read and Write permissions
 - Set a polling interval
 - On the Streamers list, follow the provided examples and add the streamers you want to check.
-- When you are done, run `./twitch_alert_bot`
+- When you are done, run `./twitch_alert_bot path_to_settings_file`
 
 ## Project Environments
 
