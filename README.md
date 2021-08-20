@@ -10,6 +10,8 @@ This bot will indicate which streamers are live on Twitch and announce them on T
 - Set a polling interval
 - On the Streamers list, follow the provided examples and add the streamers you want to check.
 - When you are done, run `./twitch_alert_bot path_to_settings_file`
+  - If you want to see the application in debug mode, provide the `--debug` flag.
+  - For more information, add the `-h|--help` flag.
 
 ## Project Environments
 
@@ -27,14 +29,14 @@ This bot will indicate which streamers are live on Twitch and announce them on T
 
 ### setup.py
 
-- As a pre-requisite, verify GCC is available on your computer (necessary to build aiohttp)
+- As a pre-requisite, verify that `gcc` is available on your computer (necessary to build `aiohttp`)
 - Run `python setup.py install`
-- The binary will be located at bin/
+- The binary will be located at `bin/`
 
 ### Nix
 
 - Run `nix-build nix/release.nix`
-- The binary will be located at result/bin/
+- The binary will be located at `result/bin/`
 
 ## Thanks to
 - [Roger Zanoni](https://gitlab.com/roger.zanoni)
