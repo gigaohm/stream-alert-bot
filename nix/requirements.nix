@@ -9,6 +9,7 @@ rec {
       python-twitter
       pytwitchapi
       pyyaml
+      requests
     ];
 
     tests = [ pythonPackages.pytest ];
