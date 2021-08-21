@@ -22,7 +22,7 @@ def main():
     twitch_creds = settings["credentials"]["twitch"]
     twitter_creds = settings["credentials"]["twitter"]
     polling_interval = (settings["polling_interval"]
-                        if settings["polling_interval"] else 120)
+                        if "polling_interval" in settings else 120)
     streamers = settings["streamers"]
     streamers_info_dict = helpers.generate_streamers_info_dict(streamers)
 
