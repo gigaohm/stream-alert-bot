@@ -30,7 +30,7 @@ def connect_to_twitch(client_id, secret):
 
 def get_all_streamers_info(twitch_connection, streamers):
     try:
-        twitch_users = [user["twitch_user"] for user in streamers]
+        twitch_users = list(streamers.keys())
         logger.debug("Obtaining streamers info")
         streamers_info = twitch_connection.get_users(logins=twitch_users)
         logger.debug("Obtained streamers info:")

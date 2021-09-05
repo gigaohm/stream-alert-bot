@@ -25,7 +25,7 @@ def connect_to_twitter(consumer_key, consumer_secret, access_key,
 def post_twitter_status(twitter_connection, message):
     try:
         logger.debug("Posting message to Twitter")
-        twitter_connection.PostUpdate(message)
+        status = twitter_connection.PostUpdate(message)
         logger.debug("Message posted successfully")
     except twitter.TwitterError as tt_e:
         # Twitter Errors are all accumulated into a single error

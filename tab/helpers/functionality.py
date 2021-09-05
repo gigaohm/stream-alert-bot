@@ -1,25 +1,32 @@
 from logging import getLogger
 from tab.api import connect_to_twitter, post_twitter_status
+import re
 
 
 logger = getLogger("twitch-alert-bot/helpers/functionality")
 
-'''
-Adapts the list of streamers in the format:
-{ "twitch_user": { "twitter_handle": x, "name": y } }
-'''
 
-
-def generate_streamers_info_dict(streamers):
-    info_dict = {}
+def transform_streamers_to_dict(streamers):
+    streamers_dict = {}
     for streamer in streamers:
-        info_dict[streamer["twitch_user"]] = {"twitter_handle": (streamer["twitter_handle"] if "twitter_handle" in streamer else ""),
-                                              "name": (streamer["name"]
-                                                       if "name" in streamer
-                                                       else "")}
-    logger.debug("Created streamer info dictionary:")
-    logger.debug(info_dict)
-    return info_dict
+        if isinstance(streamer, str):
+            logger.debug(" ".join(["Streamer", streamer,
+                                   "has no data provided"]))
+            streamers_dict[streamer] = {"twitter_handle": "",
+                                        "name": ""}
+        else:
+            for key, value in streamer.items():
+                # Dealing with empty or nonexistant keys
+                if "twitter_handle" not in value:
+                    logger.debug(" ".join(["Streamer", key,
+                                           "has no Twitter handle provided"]))
+                    value["twitter_handle"] = ""
+                if "name" not in value:
+                    logger.debug(" ".join(["Streamer", key,
+                                           "has no custom name provided"]))
+                    value["name"] = ""
+                streamers_dict[key] = value
+    return streamers_dict
 
 
 def post_to_twitter(twitter_connection, message):
@@ -37,42 +44,86 @@ def check_finished_streams(old_livestreams, new_livestreams):
 
 # Verify what streams are now live
 def check_started_streams(twitter_connection, old_livestreams, new_livestreams,
-                          streamers_info):
+                          streamers_info, tweet):
     logger.debug("Checking for started streams")
     for uid in new_livestreams.keys():
         if uid not in old_livestreams:
             stream = new_livestreams[uid]
             streamer_info = streamers_info[stream["user_login"]]
-            notify_new_livestream(stream, streamer_info, twitter_connection)
+            notify_new_livestream(stream, streamer_info, tweet,
+                                  twitter_connection)
 
 
-def notify_new_livestream(livestream_details, streamer_info,
+def notify_new_livestream(livestream_details, streamer_info, tweet,
                           twitter_connection):
-    # Extract info from streamer_info
-    custom_streamer_name = streamer_info["name"]
+    # Custom patterns
     twitter_handle = streamer_info["twitter_handle"]
+    custom_name = streamer_info["name"]
+    user_name = livestream_details["user_name"]
+    info_dict = {
+        "twitch_username": user_name,
+        "custom_name": (custom_name if custom_name != ""
+                        else user_name),
+        "game_name": livestream_details["game_name"],
+        "twitch_url": "".join(["twitch.tv/",
+                               livestream_details["user_login"]]),
+        "twitter_handle": twitter_handle,
+        "livestream_title": livestream_details["title"],
+        # Putting custom patterns here
+        # TODO: Handle custom patterns through settings
+        "twitter_handle_with_at": "".join(["@",
+                                           twitter_handle]),
+        "twitter_handle_with_at_enclosed": "".join(["(@",
+                                                    twitter_handle,
+                                                    ")"])
+    }
 
-    # Verify if streamer has custom name. If not, use Twitch user name
-    streamer_name = (custom_streamer_name
-                     if custom_streamer_name != ""
-                     else livestream_details["user_name"])
-    # Customize Twitter handle (if there's any) by adding at sign
-    twitter_handle = (" (@{})".format(twitter_handle)
-                      if twitter_handle != ""
-                      else "")
-
-    # Generate message and post to Twitter
+    # Generate message and post to Twitt_encloseder
     logger.debug(" ".join(["Found that",
-                           livestream_details["user_login"],
+                           info_dict["twitch_username"],
                            "is live"]))
-    message = generate_tweet_message(streamer_name, twitter_handle,
-                                     livestream_details["title"],
-                                     livestream_details["user_login"])
+    message = generate_tweet_message(tweet, info_dict)
     logger.info(message)
     post_to_twitter(twitter_connection, message)
 
 
 # Generates the tweet message
-# TODO: Try to make it more customizable
-def generate_tweet_message(streamer_name, twitter_handle, title, twitch_user):
-    return "{0}{1} tá on na Twitch. O título da live é: \"{2}\". Bora! #ApagaoTwitch\n\nhttps://twitch.tv/{3}\nhttps://twitch.tv/{3}\n".format(streamer_name, twitter_handle, title, twitch_user)
+def generate_tweet_message(text, stream_info):
+    logger.debug("Generating Tweet Message")
+    # Detecting key words
+    for keyword in stream_info.keys():
+        # TODO: Set this as a constant
+        pattern = "".join([r"({\d+})?({", keyword, r"})({\d+})?"])
+        result = re.finditer(pattern, text)
+        for match in result:
+            old_value = match.group()
+            # Replace key words
+            new_value = replace_keyword(old_value, stream_info, keyword)
+            # Replace spaces if keyword exists
+            if new_value != '':
+                new_value = replace_space_keys(new_value)
+            text = text.replace(old_value, new_value)
+    return text
+
+
+def replace_space_keys(text_to_replace):
+    # Replace beginning
+    m = re.findall(r"^{(\d+)}", text_to_replace)
+    if m:
+        spaces = ' ' * int(m[0])
+        text_to_replace = re.sub(r"^{(\d+)}", spaces, text_to_replace)
+    # Replace end
+    m = re.findall(r"{(\d+)}$", text_to_replace)
+    if m:
+        spaces = ' ' * int(m[0])
+        text_to_replace = re.sub(r"{(\d+)}$", spaces, text_to_replace)
+    return text_to_replace
+
+
+def replace_keyword(text_to_replace, value_dict, keyword):
+    keyword_value = value_dict[keyword]
+    if keyword_value != '':
+        return re.sub("".join(["{", keyword, "}"]), keyword_value,
+                      text_to_replace)
+    else:
+        return ''

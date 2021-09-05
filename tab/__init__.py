@@ -23,8 +23,8 @@ def main():
     twitter_creds = settings["credentials"]["twitter"]
     polling_interval = (settings["polling_interval"]
                         if "polling_interval" in settings else 120)
-    streamers = settings["streamers"]
-    streamers_info_dict = helpers.generate_streamers_info_dict(streamers)
+    tweet_skeleton = settings["message"]["text"]
+    streamers = helpers.transform_streamers_to_dict(settings["streamers"])
 
     # Authenticate to Twitch
     twitch = api.connect_to_twitch(twitch_creds["client_id"],
@@ -49,7 +49,7 @@ def main():
                                        current_live_streams)
         helpers.check_started_streams(twitter, previous_live_streams,
                                       current_live_streams,
-                                      streamers_info_dict)
+                                      streamers, tweet_skeleton)
         previous_live_streams = current_live_streams
 
         logger.debug(" ".join(["Waiting", str(polling_interval), "seconds"]))

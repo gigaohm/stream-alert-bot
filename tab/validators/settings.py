@@ -9,12 +9,56 @@ logger = getLogger("twitch-alert-bot/validators/settings")
 
 
 def verify_settings(settings):
-    # Validate credentials key
-    logger.debug("Validating the existance of credentials in the settings")
+    # First, validate required keys
+    logger.debug("Validating required keys on settings")
+    # Validate credentials key existance
+    logger.debug(("Validating the existance of the credentials key in the "
+                  "settings"))
     if "credentials" not in settings:
-        raise KeyError("Credentials not provided on settings file.")
-    credentials = settings["credentials"]
+        raise KeyError("Credentials key not found on settings file.")
+    # Validating streamers key existance
+    logger.debug(("Validating the existance of the streamers key in the "
+                  "settings"))
+    if "streamers" not in settings:
+        raise KeyError("Streamers key not found on settings file.")
+    # Validating message key existance
+    logger.debug(("Validating the existance of the message key in the "
+                  "settings"))
+    if "message" not in settings:
+        raise KeyError("Message key not found on settings file.")
+    logger.debug("Required keys (credentials, streamers, message) are present")
 
+    # Log warning for polling_interval
+    if "polling_interval" not in settings:
+        logger.warn(("Polling interval not provided. Will use default value "
+                     "(120)."))
+
+    # Now validating the content of the whole settings file
+    for key in settings.keys():
+        if key not in ["credentials", "polling_interval", "streamers",
+                       "message"]:
+            raise KeyError("".join(["Provided key (", key,
+                                    (") is not one of the following: "
+                                     "credentials, polling_interval, "
+                                     "message, streamers")]))
+        else:
+            # Send to correct key validation
+            if key == "credentials":
+                validate_credentials(settings[key])
+            elif key == "polling_interval":
+                validate_polling_interval(settings[key])
+            elif key == "streamers":
+                validate_streamers(settings[key])
+            elif key == "message":
+                validate_message(settings[key])
+            else:
+                raise ValueError("".join(["Processed key (",
+                                          key,
+                                          (") was processed but it is unknown."
+                                           " Contact developer.")]))
+
+
+def validate_credentials(credentials):
     # Validating Twitch credentials
     logger.debug(("Validating the existance of Twitch credentials in the "
                   "settings"))
@@ -32,25 +76,6 @@ def verify_settings(settings):
                         "settings file as credentials.twitter."))
     validate_twitter_credentials_settings(credentials["twitter"])
     logger.debug("Twitch credentials on the settings are complete")
-
-    # Validating polling interval value
-    logger.debug(("Validating if the polling interval (polling_interval) is "
-                  "provided"))
-    if "polling_interval" in settings:
-        validate_polling_settings(settings["polling_interval"])
-    else:
-        logger.warn(("Polling interval not provided. Will use default value "
-                     "(120)."))
-
-    # Validating list of streamers
-    logger.debug("Validating list of streamers")
-    if "streamers" not in settings:
-        raise KeyError(("Streamers key not found. They should be on the "
-                        "settings file as streamers."))
-    validate_streamers(settings["streamers"])
-    logger.debug("Streamers information is correct")
-
-    return True
 
 
 def validate_twitch_credentials_settings(credentials):
@@ -74,27 +99,44 @@ def validate_twitter_credentials_settings(credentials):
                       credentials)
 
 
-def validate_polling_settings(polling):
-    logger.debug("Validating if the polling interval value is higher than 0")
-    if not isinstance(polling, int):
+def validate_polling_interval(interval):
+    if not isinstance(interval, int):
         raise ValueError("Provided polling value is not an integer.")
-    if polling <= 0:
+    if interval <= 0:
         raise ValueError("Provided polling value is lower or equal to 0.")
     logger.debug("".join(["Polling interval on the settings is valid (",
-                          str(polling),
+                          str(interval),
                           ")"]))
+
+
+def validate_message(message):
+    if "text" not in message:
+        raise KeyError("Key text is not provided.")
+    # TODO: Handle custom_patterns here
+    logger.debug("Provided message settings are valid")
 
 
 def validate_streamers(streamers):
     for streamer in streamers:
-        if "twitch_user" not in streamer:
-            raise KeyError(("Missing key twitch_user for streamer. It is "
-                            "mandatory."))
-        for key in streamer.keys():
-            if key not in ["name", "twitter_handle", "twitch_user"]:
-                raise KeyError(" ".join(["Provided key",
-                                         key,
-                                         "does not exist"]))
+        # Handle if streamer is a dict
+        if not isinstance(streamer, dict) and not isinstance(streamer, str):
+            raise ValueError("Provided streamer info is not correct.")
+        else:
+            if isinstance(streamer, dict):
+                if len(streamer.keys()) > 1:
+                    raise ValueError(("Streamer info has strange format (more "
+                                      "than 1 key)"))
+                for key, value in streamer.items():
+                    logger.debug(" ".join(["Verifying streamer", key]))
+                    for key in value.keys():
+                        if key not in ["name", "twitter_handle"]:
+                            raise KeyError("".join(["Provided key (",
+                                                    key,
+                                                    (") is not valid. It "
+                                                     "should be one of the "
+                                                     "following: name, twitter"
+                                                     "_handle.")]))
+    logger.debug("Streamers information is correct")
 
 
 def validate_keys(key, key_path, pretty_name, service, dictionary):
