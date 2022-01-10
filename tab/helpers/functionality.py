@@ -71,14 +71,15 @@ def notify_new_livestream(livestream_details, streamer_info, tweet,
         "livestream_title": livestream_details["title"],
         # Putting custom patterns here
         # TODO: Handle custom patterns through settings
-        "twitter_handle_with_at": "".join(["@",
-                                           twitter_handle]),
-        "twitter_handle_with_at_enclosed": "".join(["(@",
-                                                    twitter_handle,
-                                                    ")"])
+        "twitter_handle_with_at": ("".join(["@", twitter_handle])
+                                   if twitter_handle != "" else ""),
+        "twitter_handle_with_at_enclosed": ("".join(["(@",
+                                                     twitter_handle,
+                                                     ")"])
+                                            if twitter_handle != "" else "")
     }
 
-    # Generate message and post to Twitt_encloseder
+    # Generate message and post to Twitter
     logger.debug(" ".join(["Found that",
                            info_dict["twitch_username"],
                            "is live"]))
