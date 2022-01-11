@@ -1,20 +1,20 @@
 [tool.poetry]
 name = "twitch-alert-bot"
 version = "0.1.0"
-description = "Indicates on Twitter when a certain streamer is live on Twitch"
+description = "Indicates on Twitter when a Twitch streamer is live"
 authors = ["P. R. d. O. <d.ol.rod@protonmail.com>"]
 license = "GPLv3"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-requests = "^2.27.1"
-twitchAPI = "^2.5.1"
-python-twitter = "^3.5"
-PyYAML = "^6.0"
+python = "^3.9"
+requests = "2.26.0"
+python-twitter = "3.5"
+PyYAML = "5.4.1"
+twitchAPI = "2.5.0"
 
 [tool.poetry.dev-dependencies]
-pycodestyle = "^2.8.0"
-pytest = "^6.2.5"
+pycodestyle = "2.8.0"
+pytest = "6.2.5"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
