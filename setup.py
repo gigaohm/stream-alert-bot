@@ -14,7 +14,7 @@ with open('requirements.dev.txt') as f:
 
 setup(
     name="twitch-alert-bot",
-    version="0.2.0",
+    version="0.1.0",
     description="Bot that checks streams from Twitch and alerts on Twitter when they are live",
     long_description=readme,
     author="P. R. d. O.",
@@ -28,6 +28,6 @@ setup(
     },
     packages=find_packages(),
     entry_points={
-        "console_scripts": [ "twitch_alert_bot=tab:main" ]
+        "console_scripts": [ "twitch_alert_bot=tab.__main__:main" ]
     },
 )

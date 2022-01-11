@@ -1,8 +1,11 @@
 Wishlist
-- [ ] Implement logging
-- [x] Implemented Nix (as shell and build)
-- [x] Code cleanup
+- [ ] Code cleanup
+- [X] Implement logging
+- [ ] Implement Nix 
+  - [X] Set a `default.nix`
+  - [ ] Set a `flakes.nix`
+- [ ] Implement tests
 - [ ] Implement try-catches
-  - [ ] Solve issue regarding posting "duplicate" tweets. A try-catch will solve this
-- [ ] Implement CI on Gitlab for Python Projects
-- [ ] ?
+- [ ] Makefile
+  - [ ] Download streamers file from Gitlab Snippets
+  - [ ] Implement function to merge creds file and streamers files
