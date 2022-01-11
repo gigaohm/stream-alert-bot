@@ -1,9 +1,9 @@
 with import ./pkgs.nix {};
 
 rec {
-    python = python38;
+    python = python39;
 
-    pythonPackages = python38Packages;
+    pythonPackages = python39Packages;
 
     base = with pythonPackages; [
       python-twitter

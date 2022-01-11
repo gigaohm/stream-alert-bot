@@ -1,9 +1,5 @@
-# Waiting for PR-133871 at NixOS/nixpkgs to be merged fully into unstable
-#import (builtins.fetchTarball {
-#    name = "nixpkgs-unstable";
-#
-#    url = "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
-#
-#    sha256 = "0z86ng2rvv0nawpq5rz7v2rlmq5dzrmadxs6zdvnk7n0vi0svrzc";
-#})
-import /home/bjorn/Projektujo/Aliaj/nixpkgs/.
+import (builtins.fetchTarball {
+    name = "nixos-21.11";
+    url = "https://github.com/NixOS/nixpkgs/archive/386234e2a61e1e8acf94dfa3a3d3ca19a6776efb.tar.gz";
+    sha256 = "sha256:1qhfham6vhy67xjdvsmhb3prvsg854wfw4l4avxnvclrcm3k2yg8";
+})
