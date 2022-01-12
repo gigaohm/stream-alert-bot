@@ -2,9 +2,10 @@
 
 - Loading settings
   - Loading file
-    - [ ] Load nonexistant file
-    - [ ] Load non-Yaml file
+    - [x] Load nonexistant file
+    - [x] Load file with wrong setup on yaml
   - Checking settings 
+    - [ ] Settings is not a dict
     - [ ] Twitch credentials do not exist
     - [ ] Twitch credentials do not have client_id
     - [ ] Twitch credentials do not have secret
