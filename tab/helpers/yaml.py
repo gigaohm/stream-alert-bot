@@ -14,7 +14,7 @@ def load_yaml(file_path):
             return yaml.safe_load(stream)
     except yaml.YAMLError as yaml_e:
         logger.error("Provided file could not be parsed as a YAML file.")
-        sys.exit(1)
+        sys.exit(5)
     except FileNotFoundError as fnf_e:
         logger.error("Provided file path does not exist.")
-        sys.exit(1)
+        sys.exit(2)
