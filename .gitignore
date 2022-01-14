@@ -1,5 +1,6 @@
 **/__pycache__
 **/*.swp
+**/*.bak
 result
 bin/*
 build/*
@@ -8,4 +9,5 @@ lib/*
 result/*
 twitch_alert_bot.egg-info/*
 etc/settings.yml
+etc/streamers.yml
 pyvenv.cfg
