@@ -9,7 +9,9 @@ logger = getLogger("twitch-alert-bot/validators/settings")
 
 
 def verify_settings(settings):
-    # First, validate required keys
+    logger.debug("First, validate we are getting a dict")
+    if not isinstance(settings, dict):
+        raise TypeError("Loaded settings are not a dictionary")
     logger.debug("Validating required keys on settings")
     # Validate credentials key existance
     logger.debug(("Validating the existance of the credentials key in the "
