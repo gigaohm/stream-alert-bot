@@ -4,7 +4,7 @@ let
   pythonEnvironment = requirements.python.buildEnv.override {
     extraLibs = requirements.base ++ requirements.tests ++ requirements.dev;
   };
-  extraPkgs = [ poetry ];
+  extraPkgs = [ gnumake poetry ];
 in
 mkShell {
     buildInputs = [ pythonEnvironment ] ++ extraPkgs;

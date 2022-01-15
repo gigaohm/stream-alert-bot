@@ -4,6 +4,7 @@ import time
 
 from tab import api, helpers, validators
 
+
 def main():
     # Obtain arguments
     args = helpers.parse_parameters()

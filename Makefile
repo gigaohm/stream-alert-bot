@@ -1,6 +1,9 @@
 VENV_NAME?=venv
 VENV_BIN=$(shell pwd)/${VENV_NAME}/bin
 PYTHON=${VENV_BIN}/python3
+SETTINGS_FILE?=etc/settings.yml
+STREAMERS_FILE?=etc/streamers.yml
+SNIPPETS_URL=https://gitlab.com/WolfangAukang/twitch-alert-bot/-/snippets/2146493/raw/main/streamers.yml
 
 help:
 	@echo "  build     Builds with Nix"
@@ -27,6 +30,11 @@ clean:
 
 lint:
 	nix-shell nix --pure --run "pycodestyle tab"
+
+generate_settings_file:
+	test -d $(SETTINGS_FILE) && rm -rf $(SETTINGS_FILE) || continue
+	curl -fsSLo $(STREAMERS_FILE) $(SNIPPETS_URL)
+	cat $(SECRETS) $(STREAMERS_FILE) > $(SETTINGS_FILE)
 
 venv: $(VENV_NAME)/bin/activate
 $(VENV_NAME)/bin/activate: setup.py
