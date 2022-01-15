@@ -1,9 +1,9 @@
 [tool.poetry]
-name = "twitch-alert-bot"
-version = "0.1.0"
-description = "Indicates on Twitter when a Twitch streamer is live"
-authors = ["P. R. d. O. <d.ol.rod@protonmail.com>"]
-license = "GPLv3"
+name = "stream-alert-bot"
+version = "0.1.2"
+description = "Alerts when a streamer is live"
+authors = ["P. R. d. O. <d.ol.rod@tutanota.com>"]
+license = "GPL-3.0-only"
 packages = [
 	{ include = "tab" }
 ]

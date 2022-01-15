@@ -14,12 +14,12 @@ with open('requirements.dev.txt') as f:
 
 setup(
     name="twitch-alert-bot",
-    version="0.1.0",
-    description="Indicates on Twitter when a Twitch streamer is live",
+    version="0.1.2",
+    description="Alerts when a streamer is live",
     long_description=readme,
     author="P. R. d. O.",
-    author_email="liquid.query960@4wrd.cc",
-    url="https://gitlab.com/WolfangAukang/twitch-alert-bot",
+    author_email="d.ol.rod@tutanota.com",
+    url="https://codeberg.org/wolfangaukang/stream-alert-bot",
     license=license,
     long_description_content_type="text/markdown",
     install_requires=req,
