@@ -1,11 +1,7 @@
 Wishlist
 - [ ] Code cleanup
-- [X] Implement logging
 - [ ] Implement Nix 
-  - [X] Set a `default.nix`
   - [ ] Set a `flakes.nix`
 - [ ] Implement tests
 - [ ] Implement try-catches
-- [ ] Makefile
-  - [ ] Download streamers file from Gitlab Snippets
-  - [ ] Implement function to merge creds file and streamers files
+- [ ] Implement Trovo Checkup
