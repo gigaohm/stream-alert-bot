@@ -4,7 +4,7 @@ let
 in
 requirements.pythonPackages.buildPythonApplication {
   pname = "stream-alert-bot";
-  version = "0.1.2";
+  version = "0.2";
   format = "pyproject";
 
   src = lib.cleanSource ./.;
