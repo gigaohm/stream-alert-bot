@@ -2,7 +2,7 @@ import logging
 import sys
 import time
 
-from tab import api, helpers, validators
+from sab import api, helpers, validators
 
 
 def main():

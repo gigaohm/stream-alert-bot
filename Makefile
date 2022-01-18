@@ -29,7 +29,7 @@ clean:
 	find . -name '*~' ! -name '*.un~' -exec rm -f {} \;
 
 lint:
-	nix-shell nix --pure --run "pycodestyle tab"
+	nix-shell nix --pure --run "pycodestyle sab"
 
 generate_settings_file:
 	test -d $(SETTINGS_FILE) && rm -rf $(SETTINGS_FILE) || continue

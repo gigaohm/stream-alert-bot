@@ -2,8 +2,8 @@ from logging import getLogger
 import sys
 import time
 
-import tab.api
-import tab.helpers
+import sab.api
+import sab.helpers
 
 logger = getLogger("twitch-alert-bot/validators/settings")
 

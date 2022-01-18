@@ -1,5 +1,5 @@
 from logging import getLogger
-from tab.api import connect_to_twitter, post_twitter_status
+from sab.api import connect_to_twitter, post_twitter_status
 import re
 
 

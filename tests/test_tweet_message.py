@@ -1,4 +1,4 @@
-from tab import helpers
+from sab import helpers
 
 
 TWEET_SKELETON = "{custom_name}{1}{twitter_handle_with_at_enclosed}{1}tá on "\
