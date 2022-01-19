@@ -1,9 +1,10 @@
 import argparse
 
+from sab import constants
+
 
 def generate_parser():
-    # TODO: Add description
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description=constants.PROGRAM_DESCRIPTION)
     optional = parser._action_groups.pop()
     optional.add_argument(
         "--debug",
@@ -15,7 +16,8 @@ def generate_parser():
         "--consumer",
         "-c",
         type=str,
-        help="Consumer to use (trovo, twitch)"
+        help="Consumer to use",
+        choices=constants.CONSUMER_TYPES
     )
     required = parser.add_argument_group('required arguments')
     required.add_argument(
