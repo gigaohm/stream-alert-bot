@@ -10,3 +10,25 @@ SERVICES_KEYS = {
                 ("access_key", "Access Key"),
                 ("access_secret", "Access Secret")]
 }
+CONSUMER_KEYS_TRANSLATION = {
+    "username": {
+        "trovo": "username",
+        "twitch": "user_name"
+    },
+    "userlogin": {
+        "trovo": "username",
+        "twitch": "user_login"
+    },
+    "gamename": {
+        "trovo": "category_id",
+        "twitch": "game_name"
+    },
+    "title": {
+        "trovo": "live_title",
+        "twitch": "title"
+    },
+    "url": {
+        "trovo": "trovo.live/",
+        "twitch": "twitch.tv/"
+    }
+}
