@@ -1,7 +1,8 @@
 Wishlist
 - [ ] Code cleanup
-- [ ] Implement Nix 
-  - [ ] Set a `flakes.nix`
 - [ ] Implement tests
 - [ ] Implement try-catches
-- [ ] Implement Trovo Checkup
+- [ ] Implement Publisher Factory
+  - [ ] List of supported publishers
+    - [ ] Twitter
+  - [ ] Handle list of publishers
