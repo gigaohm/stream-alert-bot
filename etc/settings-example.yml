@@ -12,11 +12,11 @@ polling_interval: 180
 # Message to tweet. Can surpass the character limit, but this will
 # mean the tweet will be divided into other tweets after surpassing the limit.
 # Accepts the following keywords:
-# {twitch_username}: Will use the original Twitch user name
+# {streamer_username}: Will use the original Twitch user name
 # {custom_name}: Will use the provided name on the streamers entry.
 #                If none is provided, will use twitch_username by default
 # {game_name}: Will show the game being played
-# {twitch_url}: Will show Twitch channel url (twitch.tv/username)
+# {stream_url}: Will show Twitch channel url (twitch.tv/username)
 # {twitter_handle}: Will use the Twitter handle.
 #                   If none is provided, it will show as empty.
 # {twitter_handle_with_at}: Will show the Twitter handle with the at sign at the beginning (e.g. @myhandle).
@@ -33,7 +33,7 @@ polling_interval: 180
 #       Test{1}{twitter_handle}! but there is no Twitter handle
 #         becomes "Test!"
 message:
-  text: "{twitch_username} is live!"
+  text: "{streamer_username} is live!"
 streamers:
 # You can provide the following info:
 # Twitch User (required)

@@ -1,6 +1,10 @@
-from logging import getLogger
-from sab.api import connect_to_twitter, post_twitter_status
 import re
+from logging import getLogger
+from twitter import Api
+from typing import List
+
+from sab import constants
+from sab.api import connect_to_twitter, post_twitter_status
 
 
 logger = getLogger("twitch-alert-bot/helpers/functionality")
@@ -34,41 +38,68 @@ def post_to_twitter(twitter_connection, message):
 
 
 # Verifies which livestreams have been finished
-def check_finished_streams(old_livestreams, new_livestreams):
+def check_finished_streams(old_livestreams: dict,
+                           new_livestreams: dict,
+                           consumer_type: str) -> bool:
+    user_key = constants.CONSUMER_KEYS_TRANSLATION["username"][consumer_type]
+    print(user_key)
     logger.debug("Checking for finished streams")
-    for uid in old_livestreams.keys():
-        if uid not in new_livestreams:
+    for id in old_livestreams.keys():
+        if id not in new_livestreams:
             logger.debug(" ".join(["Finished:",
-                                   old_livestreams[uid]["user_name"]]))
+                                   old_livestreams[id][user_key]]))
+    return True
 
 
 # Verify what streams are now live
-def check_started_streams(twitter_connection, old_livestreams, new_livestreams,
-                          streamers_info, tweet):
+def check_started_streams(consumer_type: str,
+                          publishers_connections: List[Api],
+                          old_livestreams: dict,
+                          new_livestreams: dict,
+                          streamers_info: dict,
+                          message: str) -> bool:
+    user_key = constants.CONSUMER_KEYS_TRANSLATION["userlogin"][consumer_type]
     logger.debug("Checking for started streams")
-    for uid in new_livestreams.keys():
-        if uid not in old_livestreams:
-            stream = new_livestreams[uid]
-            streamer_info = streamers_info[stream["user_login"]]
-            notify_new_livestream(stream, streamer_info, tweet,
-                                  twitter_connection)
+    for id in new_livestreams.keys():
+        if id not in old_livestreams:
+            stream = new_livestreams[id]
+            streamer_key = stream[user_key]
+            if consumer_type == "trovo":
+                streamer_key = streamer_key.lower()
+            streamer_info = streamers_info[streamer_key]
+            notify_new_livestream(consumer_type, stream, streamer_info,
+                                  message, publishers_connections)
+    return True
 
 
-def notify_new_livestream(livestream_details, streamer_info, tweet,
-                          twitter_connection):
+def notify_new_livestream(consumer_type: str,
+                          livestream_details: dict,
+                          streamer_info: dict,
+                          message: str,
+                          publishers_connections: List[Api]) -> bool:
+    # Translations
+    user_key = constants.CONSUMER_KEYS_TRANSLATION["username"][consumer_type]
+    game_key = constants.CONSUMER_KEYS_TRANSLATION["gamename"][consumer_type]
+    base_url = constants.CONSUMER_KEYS_TRANSLATION["url"][consumer_type]
+    title_key = constants.CONSUMER_KEYS_TRANSLATION["title"][consumer_type]
+    login_key = constants.CONSUMER_KEYS_TRANSLATION["userlogin"][consumer_type]
+    user_login = livestream_details[login_key]
+    if consumer_type == "trovo":
+        user_login = user_login.lower()
+
     # Custom patterns
     twitter_handle = streamer_info["twitter_handle"]
     custom_name = streamer_info["name"]
-    user_name = livestream_details["user_name"]
+    user_name = livestream_details[user_key]
+
     info_dict = {
-        "twitch_username": user_name,
+        "streamer_username": user_name,
         "custom_name": (custom_name if custom_name != ""
                         else user_name),
-        "game_name": livestream_details["game_name"],
-        "twitch_url": "".join(["twitch.tv/",
-                               livestream_details["user_login"]]),
+        "game_name": livestream_details[game_key],
+        "stream_url": "".join([base_url, user_login]),
         "twitter_handle": twitter_handle,
-        "livestream_title": livestream_details["title"],
+        "livestream_title": livestream_details[title_key],
         # Putting custom patterns here
         # TODO: Handle custom patterns through settings
         "twitter_handle_with_at": ("".join(["@", twitter_handle])
@@ -81,15 +112,16 @@ def notify_new_livestream(livestream_details, streamer_info, tweet,
 
     # Generate message and post to Twitter
     logger.debug(" ".join(["Found that",
-                           info_dict["twitch_username"],
+                           info_dict["streamer_username"],
                            "is live"]))
-    message = generate_tweet_message(tweet, info_dict)
-    logger.info(message)
-    post_to_twitter(twitter_connection, message)
+    formatted_message = generate_message(message, info_dict)
+    logger.info(formatted_message)
+    # TODO: Handle multiple publishers
+    post_to_twitter(publishers_connections, formatted_message)
 
 
 # Generates the tweet message
-def generate_tweet_message(text, stream_info):
+def generate_message(text, stream_info):
     logger.debug("Generating Tweet Message")
     # Detecting key words
     for keyword in stream_info.keys():

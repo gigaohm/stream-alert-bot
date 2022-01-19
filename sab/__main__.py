@@ -17,38 +17,43 @@ def main():
     settings = helpers.load_yaml(args.settings_file_path)
     validators.verify_settings(settings)
     logger.debug("Settings verified, time to grab the data")
-    twitch_creds = settings["credentials"]["twitch"]
-    twitter_creds = settings["credentials"]["twitter"]
+    consumer_creds = validators.verify_service(args.consumer,
+                                               settings["credentials"],
+                                               "consumer")
+    # TODO: Handle multiple publisher creds
+    publisher_creds = validators.verify_service(args.publisher,
+                                                settings["credentials"],
+                                                "publisher")
     polling_interval = (settings["polling_interval"]
                         if "polling_interval" in settings else 120)
-    tweet_skeleton = settings["message"]["text"]
+    msg_skeleton = settings["message"]["text"]
     streamers = helpers.transform_streamers_to_dict(settings["streamers"])
 
-    # Authenticate to Twitch
-    twitch = api.connect_to_twitch(twitch_creds["client_id"],
-                                   twitch_creds["secret"])
-
+    # Authenticate to consumer
+    consumer_client = api.create_consumer(args.consumer, consumer_creds)
+    # TODO: Create a general method for publisher authentication
     # Generate connection to Twitter
-    twitter = api.connect_to_twitter(twitter_creds["consumer_key"],
-                                     twitter_creds["consumer_secret"],
-                                     twitter_creds["access_key"],
-                                     twitter_creds["access_secret"])
+    twitter = api.connect_to_twitter(publisher_creds["consumer_key"],
+                                     publisher_creds["consumer_secret"],
+                                     publisher_creds["access_key"],
+                                     publisher_creds["access_secret"])
 
     # Initial livestream info
     logger.debug("Generating initial state of livestreams")
-    streamers_info = api.get_all_streamers_info(twitch, streamers)
-    previous_live_streams = api.get_live_streams(twitch, streamers_info)
+    streamers_info = consumer_client.get_all_streamers_info(streamers)
+    previous_statuses = consumer_client.get_active_channels(streamers_info)
 
     # Poll channel changes
     while True:
         logger.debug("Polling and checking new livestreams")
-        current_live_streams = api.get_live_streams(twitch, streamers_info)
-        helpers.check_finished_streams(previous_live_streams,
-                                       current_live_streams)
-        helpers.check_started_streams(twitter, previous_live_streams,
-                                      current_live_streams,
-                                      streamers, tweet_skeleton)
-        previous_live_streams = current_live_streams
+        current_statuses = consumer_client.get_active_channels(streamers_info)
+        helpers.check_finished_streams(previous_statuses,
+                                       current_statuses,
+                                       args.consumer)
+        helpers.check_started_streams(args.consumer, twitter,
+                                      previous_statuses, current_statuses,
+                                      streamers, msg_skeleton)
+        previous_statuses = current_statuses
 
         logger.debug(" ".join(["Waiting", str(polling_interval), "seconds"]))
         time.sleep(polling_interval)
