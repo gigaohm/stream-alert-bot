@@ -11,11 +11,17 @@ def generate_parser():
         action='store_true',
         help="Starts debug mode"
     )
+    optional.add_argument(
+        "--consumer",
+        "-c",
+        type=str,
+        help="Consumer to use (trovo, twitch)"
+    )
     required = parser.add_argument_group('required arguments')
     required.add_argument(
         'settings_file_path',
         type=str,
-        help="path to the settings file"
+        help="Path to the settings file"
     )
     parser._action_groups.append(optional)
     return parser
