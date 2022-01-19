@@ -13,13 +13,6 @@ def generate_parser():
         help="Starts debug mode"
     )
     optional.add_argument(
-        "--consumer",
-        "-c",
-        type=str,
-        help="Consumer to use. Must be one",
-        choices=constants.CONSUMER_TYPES
-    )
-    optional.add_argument(
         "--publisher",
         "-p",
         nargs="+",
@@ -32,6 +25,12 @@ def generate_parser():
         'settings_file_path',
         type=str,
         help="Path to the settings file"
+    )
+    required.add_argument(
+        "consumer",
+        type=str,
+        help="Consumer to use. Must be one",
+        choices=constants.CONSUMER_TYPES
     )
     parser._action_groups.append(optional)
     return parser
