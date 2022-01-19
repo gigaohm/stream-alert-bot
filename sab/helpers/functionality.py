@@ -42,7 +42,6 @@ def check_finished_streams(old_livestreams: dict,
                            new_livestreams: dict,
                            consumer_type: str) -> bool:
     user_key = constants.CONSUMER_KEYS_TRANSLATION["username"][consumer_type]
-    print(user_key)
     logger.debug("Checking for finished streams")
     for id in old_livestreams.keys():
         if id not in new_livestreams:
