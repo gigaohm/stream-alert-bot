@@ -16,8 +16,16 @@ def generate_parser():
         "--consumer",
         "-c",
         type=str,
-        help="Consumer to use",
+        help="Consumer to use. Must be one",
         choices=constants.CONSUMER_TYPES
+    )
+    optional.add_argument(
+        "--publisher",
+        "-p",
+        nargs="+",
+        help="Publishers to use. Can be more than 1",
+        default="twitter",
+        choices=constants.PUBLISHER_TYPES,
     )
     required = parser.add_argument_group('required arguments')
     required.add_argument(
