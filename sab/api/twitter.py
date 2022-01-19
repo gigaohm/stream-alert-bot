@@ -3,7 +3,7 @@ import sys
 import twitter
 
 
-logger = getLogger("twitch-alert-bot/api/twitter")
+logger = getLogger("stream-alert-bot/api/twitter")
 
 
 def connect_to_twitter(consumer_key, consumer_secret, access_key,

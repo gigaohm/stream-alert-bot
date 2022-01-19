@@ -7,7 +7,7 @@ from sab import constants
 from sab.api import connect_to_twitter, post_twitter_status
 
 
-logger = getLogger("twitch-alert-bot/helpers/functionality")
+logger = getLogger("stream-alert-bot/helpers/functionality")
 
 
 def transform_streamers_to_dict(streamers):

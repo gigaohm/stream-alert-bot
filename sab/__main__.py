@@ -11,7 +11,7 @@ def main():
 
     # Set up logger
     logging.basicConfig(level=(logging.DEBUG if args.debug else logging.INFO))
-    logger = logging.getLogger("twitch-alert-bot")
+    logger = logging.getLogger("stream-alert-bot")
 
     # Obtain settings and adapt streamers list
     settings = helpers.load_yaml(args.settings_file_path)
