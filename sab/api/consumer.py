@@ -11,9 +11,9 @@ logger = getLogger("stream-alert-bot/api/consumer")
 
 def create_consumer(consumer_type: str,
                     credentials: dict) -> Union[Twitch, TrovoClient]:
-    consumersReference = {
+    consumers_reference = {
         "twitch": TwitchConsumer,
         "trovo": TrovoConsumer
     }
 
-    return consumersReference[consumer_type](credentials)
+    return consumers_reference[consumer_type](credentials)
