@@ -13,11 +13,11 @@ def generate_parser():
         help="Starts debug mode"
     )
     optional.add_argument(
-        "--publisher",
+        "--publishers",
         "-p",
         nargs="+",
         help="Publishers to use. Can be more than 1",
-        default="twitter",
+        default=["twitter"],
         choices=constants.PUBLISHER_TYPES,
     )
     required = parser.add_argument_group('required arguments')
