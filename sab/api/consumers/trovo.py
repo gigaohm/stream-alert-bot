@@ -1,6 +1,5 @@
-from logging import Logger, getLogger
 import sys
-
+from logging import Logger, getLogger
 from requests.exceptions import ConnectionError
 from trovoApi import TrovoClient
 
@@ -15,8 +14,6 @@ class TrovoConsumer:
         try:
             client_id = credentials["client_id"]
             trovo = TrovoClient(client_id)
-            # TODO: Implement auth if possible
-            # self.__logger.debug("Connection to Twitch successful")
             self.__logger = getLogger("stream-alert-bot/api/consumers/trovo")
             self.__logger.debug("Connection to Trovo created")
             self.client = trovo
