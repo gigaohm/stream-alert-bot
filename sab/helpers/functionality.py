@@ -4,7 +4,6 @@ from twitter import Api
 from typing import List
 
 from sab import constants
-from sab.api import connect_to_twitter, post_twitter_status
 
 
 logger = getLogger("stream-alert-bot/helpers/functionality")
@@ -33,10 +32,6 @@ def transform_streamers_to_dict(streamers):
     return streamers_dict
 
 
-def post_to_twitter(twitter_connection, message):
-    post_twitter_status(twitter_connection, message)
-
-
 # Verifies which livestreams have been finished
 def check_finished_streams(old_livestreams: dict,
                            new_livestreams: dict,
@@ -52,7 +47,7 @@ def check_finished_streams(old_livestreams: dict,
 
 # Verify what streams are now live
 def check_started_streams(consumer_type: str,
-                          publishers_connections: List[Api],
+                          publisher_connections: List[Api],
                           old_livestreams: dict,
                           new_livestreams: dict,
                           streamers_info: dict,
@@ -67,7 +62,7 @@ def check_started_streams(consumer_type: str,
                 streamer_key = streamer_key.lower()
             streamer_info = streamers_info[streamer_key]
             notify_new_livestream(consumer_type, stream, streamer_info,
-                                  message, publishers_connections)
+                                  message, publisher_connections)
     return True
 
 
@@ -75,7 +70,7 @@ def notify_new_livestream(consumer_type: str,
                           livestream_details: dict,
                           streamer_info: dict,
                           message: str,
-                          publishers_connections: List[Api]) -> bool:
+                          publisher_connections: List[Api]) -> bool:
     # Translations
     user_key = constants.CONSUMER_KEYS_TRANSLATION["username"][consumer_type]
     game_key = constants.CONSUMER_KEYS_TRANSLATION["gamename"][consumer_type]
@@ -109,14 +104,14 @@ def notify_new_livestream(consumer_type: str,
                                             if twitter_handle != "" else "")
     }
 
-    # Generate message and post to Twitter
+    # Generate message and post to publishers
     logger.debug(" ".join(["Found that",
                            info_dict["streamer_username"],
                            "is live"]))
     formatted_message = generate_message(message, info_dict)
     logger.info(formatted_message)
-    # TODO: Handle multiple publishers
-    post_to_twitter(publishers_connections, formatted_message)
+    for publisher in publisher_connections:
+        publisher.post_message(formatted_message)
 
 
 # Generates the tweet message
