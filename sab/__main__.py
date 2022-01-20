@@ -17,13 +17,10 @@ def main():
     settings = helpers.load_yaml(args.settings_file_path)
     validators.verify_settings(settings)
     logger.debug("Settings verified, time to grab the data")
-    consumer_creds = validators.verify_service(args.consumer,
-                                               settings["credentials"],
-                                               "consumer")
-    # TODO: Handle multiple publisher creds
-    publisher_creds = validators.verify_service(args.publisher,
-                                                settings["credentials"],
-                                                "publisher")
+    consumer_creds = validators.verify_consumer(args.consumer,
+                                                settings["credentials"])
+    publisher_creds = validators.verify_publishers(args.publishers,
+                                                   settings["credentials"])
     polling_interval = (settings["polling_interval"]
                         if "polling_interval" in settings else 120)
     msg_skeleton = settings["message"]["text"]
@@ -31,12 +28,8 @@ def main():
 
     # Authenticate to consumer
     consumer_client = api.create_consumer(args.consumer, consumer_creds)
-    # TODO: Create a general method for publisher authentication
     # Generate connection to Twitter
-    twitter = api.connect_to_twitter(publisher_creds["consumer_key"],
-                                     publisher_creds["consumer_secret"],
-                                     publisher_creds["access_key"],
-                                     publisher_creds["access_secret"])
+    publishers = api.create_publishers(publisher_creds)
 
     # Initial livestream info
     logger.debug("Generating initial state of livestreams")
@@ -50,7 +43,7 @@ def main():
         helpers.check_finished_streams(previous_statuses,
                                        current_statuses,
                                        args.consumer)
-        helpers.check_started_streams(args.consumer, twitter,
+        helpers.check_started_streams(args.consumer, publishers,
                                       previous_statuses, current_statuses,
                                       streamers, msg_skeleton)
         previous_statuses = current_statuses
