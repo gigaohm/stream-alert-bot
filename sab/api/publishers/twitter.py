@@ -34,7 +34,7 @@ class TwitterPublisher:
             self.__logger.debug("Message posted successfully")
         except TwitterError as tt_e:
             # Twitter Errors are all accumulated into a single error
-            __handle_twitter_errors(tt_e)
+            self.__handle_twitter_errors(tt_e)
         except Exception as e:
             logger.exception(e)
             sys.exit(1)
