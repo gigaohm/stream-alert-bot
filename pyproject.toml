@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "stream-alert-bot"
-version = "0.1.2"
+version = "0.2"
 description = "Alerts when a streamer is live"
 authors = ["P. R. d. O. <d.ol.rod@tutanota.com>"]
 license = "GPL-3.0-only"
 packages = [
-	{ include = "tab" }
+	{ include = "sab" }
 ]
 
 [tool.poetry.dependencies]
@@ -14,13 +14,14 @@ requests = "2.26.0"
 python-twitter = "3.5"
 PyYAML = "5.4.1"
 twitchAPI = "2.5.0"
+python-trovo = "^0.1.1"
 
 [tool.poetry.dev-dependencies]
 pycodestyle = "2.8.0"
 pytest = "6.2.5"
 
 [tool.poetry.scripts]
-twitch_alert_bot = "tab.__main__:main"
+stream_alert_bot = "sab.__main__:main"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

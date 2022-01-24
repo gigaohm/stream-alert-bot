@@ -1,7 +1,7 @@
 import os.path
 import pytest
 
-from tab import helpers
+from sab import helpers
 
 
 MISC_PATH = "/".join([os.path.abspath("."),

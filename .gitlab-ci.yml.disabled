@@ -42,7 +42,7 @@ lint:
     stage: test
     script:
     - pip install -e .[devel]
-    - pycodestyle tab
+    - pycodestyle sab
 
 # TODO: Add testing
 #test:

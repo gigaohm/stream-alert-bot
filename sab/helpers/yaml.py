@@ -4,7 +4,7 @@ import sys
 import yaml
 
 
-logger = getLogger("twitch-alert-bot/helper/yaml")
+logger = getLogger("stream-alert-bot/helper/yaml")
 
 
 def load_yaml(file_path):
