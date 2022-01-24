@@ -2,10 +2,10 @@
 
 This bot will indicate which streamers are live. It supports the following consumers (streaming platforms) and publishers (notification platforms):
 - Consumers
-  - [Trovo](trovo.live)
-  - [Twitch](twitch.tv)
+  - [Trovo](https://trovo.live)
+  - [Twitch](https://twitch.tv)
 - Publishers
-  - [Twitter](twitter.com)
+  - [Twitter](https://twitter.com)
 
 ## How To Use
 
