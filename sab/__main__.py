@@ -26,9 +26,8 @@ def main():
     msg_skeleton = settings["message"]["text"]
     streamers = helpers.transform_streamers_to_dict(settings["streamers"])
 
-    # Authenticate to consumer
+    # Generate connection to consumer/publishers
     consumer_client = api.create_consumer(args.consumer, consumer_creds)
-    # Generate connection to Twitter
     publishers = api.create_publishers(publisher_creds)
 
     # Initial livestream info

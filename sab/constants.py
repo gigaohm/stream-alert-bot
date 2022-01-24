@@ -1,3 +1,19 @@
+from trovoApi import TrovoClient
+from twitchAPI.twitch import Twitch
+from twitter import Api
+from typing import List, Union
+
+
+'''
+TYPING TYPES
+'''
+consumer_types = Union[Twitch, TrovoClient]
+publisher_types = List[Union[Api]]
+
+
+'''
+CONSTANTS
+'''
 PROGRAM_DESCRIPTION = "Alerts when a streamer is live"
 CONSUMER_TYPES = ["trovo", "twitch"]
 PUBLISHER_TYPES = ["twitter"]

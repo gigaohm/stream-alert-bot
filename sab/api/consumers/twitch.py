@@ -34,7 +34,8 @@ class TwitchConsumer:
             self.__logger.exception(e)
             sys.exit(1)
 
-    def get_all_streamers_info(self, streamers):
+    def get_all_streamers_info(self,
+                               streamers: dict) -> dict:
         try:
             twitch_users = list(streamers.keys())
             self.__logger.debug("Obtaining streamers info")
@@ -50,7 +51,8 @@ class TwitchConsumer:
             self.__logger.exception(e)
             sys.exit(1)
 
-    def get_active_channels(self, streamers_info):
+    def get_active_channels(self,
+                            streamers_info: dict) -> dict:
         statuses = {}
         self.__logger.debug("Obtaining channels status")
         try:

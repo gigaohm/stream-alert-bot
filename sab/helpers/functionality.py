@@ -1,7 +1,6 @@
 import re
 from logging import getLogger
-from twitter import Api
-from typing import List
+from typing import List, Union
 
 from sab import constants
 
@@ -9,7 +8,7 @@ from sab import constants
 logger = getLogger("stream-alert-bot/helpers/functionality")
 
 
-def transform_streamers_to_dict(streamers):
+def transform_streamers_to_dict(streamers: Union[dict, str]) -> dict:
     streamers_dict = {}
     for streamer in streamers:
         if isinstance(streamer, str):
@@ -47,7 +46,7 @@ def check_finished_streams(old_livestreams: dict,
 
 # Verify what streams are now live
 def check_started_streams(consumer_type: str,
-                          publisher_connections: List[Api],
+                          publisher_connections: constants.publisher_types,
                           old_livestreams: dict,
                           new_livestreams: dict,
                           streamers_info: dict,
@@ -66,11 +65,12 @@ def check_started_streams(consumer_type: str,
     return True
 
 
-def notify_new_livestream(consumer_type: str,
-                          livestream_details: dict,
-                          streamer_info: dict,
-                          message: str,
-                          publisher_connections: List[Api]) -> bool:
+def notify_new_livestream(
+        consumer_type: str,
+        livestream_details: dict,
+        streamer_info: dict,
+        message: str,
+        publisher_connections: constants.publisher_types) -> bool:
     # Translations
     user_key = constants.CONSUMER_KEYS_TRANSLATION["username"][consumer_type]
     game_key = constants.CONSUMER_KEYS_TRANSLATION["gamename"][consumer_type]
@@ -115,7 +115,8 @@ def notify_new_livestream(consumer_type: str,
 
 
 # Generates the tweet message
-def generate_message(text, stream_info):
+def generate_message(text: str,
+                     stream_info: str) -> str:
     logger.debug("Generating Tweet Message")
     # Detecting key words
     for keyword in stream_info.keys():
@@ -133,7 +134,7 @@ def generate_message(text, stream_info):
     return text
 
 
-def replace_space_keys(text_to_replace):
+def replace_space_keys(text_to_replace: str) -> str:
     # Replace beginning
     m = re.findall(r"^{(\d+)}", text_to_replace)
     if m:
@@ -147,7 +148,9 @@ def replace_space_keys(text_to_replace):
     return text_to_replace
 
 
-def replace_keyword(text_to_replace, value_dict, keyword):
+def replace_keyword(text_to_replace: str,
+                    value_dict: dict,
+                    keyword: str) -> str:
     keyword_value = value_dict[keyword]
     if keyword_value != '':
         return re.sub("".join(["{", keyword, "}"]), keyword_value,

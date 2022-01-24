@@ -27,7 +27,7 @@ class TwitterPublisher:
             logger.exception(e)
             sys.exit(1)
 
-    def post_message(self, message):
+    def post_message(self, message: str) -> bool:
         try:
             self.__logger.debug("Posting message to Twitter")
             status = self.client.PostUpdate(message)
@@ -38,8 +38,9 @@ class TwitterPublisher:
         except Exception as e:
             logger.exception(e)
             sys.exit(1)
+        return True
 
-    def __handle_twitter_errors(self, twitter_error):
+    def __handle_twitter_errors(self, twitter_error: TwitterError) -> None:
         # Twitter Errors are all accumulated into a single error
         error_code = twitter_error.message[0]["code"]
         error_message = twitter_error.message[0]["message"]

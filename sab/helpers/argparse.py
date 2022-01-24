@@ -1,10 +1,10 @@
-import argparse
+from argparse import ArgumentParser
 
 from sab import constants
 
 
-def generate_parser():
-    parser = argparse.ArgumentParser(description=constants.PROGRAM_DESCRIPTION)
+def generate_parser() -> ArgumentParser:
+    parser = ArgumentParser(description=constants.PROGRAM_DESCRIPTION)
     optional = parser._action_groups.pop()
     optional.add_argument(
         "--debug",
@@ -36,6 +36,6 @@ def generate_parser():
     return parser
 
 
-def parse_parameters():
+def parse_parameters() -> dict:
     parser = generate_parser()
     return parser.parse_args()
