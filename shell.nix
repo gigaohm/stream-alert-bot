@@ -4,11 +4,11 @@ let
 
   python-trovo = requirements.pythonPackages.buildPythonPackage rec {
     pname = "python-trovo";
-    version = "0.1.3";
+    version = "0.1.4";
 
     src = requirements.pythonPackages.fetchPypi {
       inherit pname version;
-      sha256 = "sha256-iKG6UGc3pUjN00kxkBRL0ZbzB8OCbWOi1kb+YpLzOfE=";
+      sha256 = "sha256-N66Lrda/QvJIPF2FEHboiN2x22y5leXcXGhvlOJQpGU=";
     };
 
     propagatedBuildInputs = with requirements.pythonPackages; [ requests ];
