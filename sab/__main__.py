@@ -17,12 +17,13 @@ def main():
     settings = helpers.load_yaml(args.settings_file_path)
     validators.verify_settings(settings)
     logger.debug("Settings verified, time to grab the data")
-    consumer_creds = validators.verify_consumer(args.consumer,
-                                                settings["credentials"])
-    publisher_creds = validators.verify_publishers(args.publishers,
-                                                   settings["credentials"])
-    polling_interval = (settings["polling_interval"]
-                        if "polling_interval" in settings else 120)
+    consumer_creds = validators.verify_consumer(args.consumer, settings["credentials"])
+    publisher_creds = validators.verify_publishers(
+        args.publishers, settings["credentials"]
+    )
+    polling_interval = (
+        settings["polling_interval"] if "polling_interval" in settings else 120
+    )
     msg_skeleton = settings["message"]["text"]
     streamers = helpers.transform_streamers_to_dict(settings["streamers"])
 
@@ -39,12 +40,17 @@ def main():
     while True:
         logger.debug("Polling and checking new livestreams")
         current_statuses = consumer_client.get_active_channels(streamers_info)
-        helpers.check_finished_streams(previous_statuses,
-                                       current_statuses,
-                                       args.consumer)
-        helpers.check_started_streams(args.consumer, publishers,
-                                      previous_statuses, current_statuses,
-                                      streamers, msg_skeleton)
+        helpers.check_finished_streams(
+            previous_statuses, current_statuses, args.consumer
+        )
+        helpers.check_started_streams(
+            args.consumer,
+            publishers,
+            previous_statuses,
+            current_statuses,
+            streamers,
+            msg_skeleton,
+        )
         previous_statuses = current_statuses
 
         logger.debug(" ".join(["Waiting", str(polling_interval), "seconds"]))
