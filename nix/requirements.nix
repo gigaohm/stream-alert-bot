@@ -14,5 +14,9 @@ rec {
 
     tests = [ pythonPackages.pytest ];
 
-    dev = [ pythonPackages.pycodestyle ];
+    dev = with pythonPackages; [
+      black
+      mypy
+      types-requests
+    ];
 }
