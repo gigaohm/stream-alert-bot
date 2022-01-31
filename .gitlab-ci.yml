@@ -1,0 +1,42 @@
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Python.gitlab-ci.yml
+
+# Official language image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/python/tags/
+image: python:3.8
+
+# List of stages for jobs, and their order of execution
+stages:
+  - build
+  - test
+  - lint 
+  - types 
+
+before_script:
+  - python -V
+  - pip install poetry
+  - poetry config virtualenvs.create false
+  - poetry install
+
+Build:
+    stage: build
+    script:
+    - poetry build
+
+Test:
+    stage: test
+    script:
+    - poetry run pytest
+
+Lint:
+    stage: lint 
+    script:
+    - poetry run black . 
+
+Type Check:
+    stage: types 
+    script:
+    - poetry run mypy . 
+

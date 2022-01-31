@@ -7,10 +7,9 @@ from trovoApi import TrovoClient, TrovoApiException
 class TrovoConsumer:
     client: TrovoClient = None
 
-    __logger: Logger = None
+    __logger: Logger
 
-    def __init__(self,
-                 credentials: dict):
+    def __init__(self, credentials: dict):
         try:
             client_id = credentials["client_id"]
             trovo = TrovoClient(client_id)
@@ -18,19 +17,18 @@ class TrovoConsumer:
             self.__logger.debug("Connection to Trovo created")
             self.client = trovo
         except TrovoApiException as tr_e:
-            self.__logger.error("".join(["Trovo API gave the following ",
-                                         "error: ", tr_e.message]))
+            self.__logger.error(
+                "".join(["Trovo API gave the following ", "error: ", tr_e.message])
+            )
             sys.exit(1)
         except ConnectionError as c_e:
-            self.__logger.error(("Not able to connect to API. Verify your "
-                                 "network"))
+            self.__logger.error(("Not able to connect to API. Verify your " "network"))
             sys.exit(1)
         except Exception as e:
             self.__logger.exception(e)
             sys.exit(1)
 
-    def get_all_streamers_info(self,
-                               streamers: dict) -> dict:
+    def get_all_streamers_info(self, streamers: dict) -> dict:
         try:
             trovo_users = list(streamers.keys())
             self.__logger.debug("Obtaining streamers info")
@@ -39,19 +37,18 @@ class TrovoConsumer:
             self.__logger.debug(streamers_info)
             return streamers_info["users"]
         except TrovoApiException as tr_e:
-            self.__logger.error("".join(["Trovo API gave the following ",
-                                         "error: ", tr_e.message]))
+            self.__logger.error(
+                "".join(["Trovo API gave the following ", "error: ", tr_e.message])
+            )
             sys.exit(1)
         except ConnectionError as c_e:
-            self.__logger.error(("Not able to connect to API. Verify your "
-                                 "network."))
+            self.__logger.error(("Not able to connect to API. Verify your " "network."))
             sys.exit(1)
         except Exception as e:
             self.__logger.exception(e)
             sys.exit(1)
 
-    def get_active_channels(self,
-                            streamers_info: dict) -> dict:
+    def get_active_channels(self, streamers_info: dict) -> dict:
         statuses = {}
         self.__logger.debug("Obtaining channels status")
         try:
@@ -65,12 +62,12 @@ class TrovoConsumer:
             self.__logger.debug(statuses)
             return statuses
         except TrovoApiException as tr_e:
-            self.__logger.error("".join(["Trovo API gave the following ",
-                                         "error: ", tr_e.message]))
+            self.__logger.error(
+                "".join(["Trovo API gave the following ", "error: ", tr_e.message])
+            )
             sys.exit(1)
         except ConnectionError as c_e:
-            self.__logger.error(("Not able to connect to API. Verify your "
-                                 "network."))
+            self.__logger.error(("Not able to connect to API. Verify your " "network."))
             sys.exit(1)
         except Exception as e:
             self.__logger.exception(e)

@@ -5,9 +5,7 @@ from sab.api.publishers import TwitterPublisher
 
 
 logger = getLogger("stream-alert-bot/api/publisher")
-publishers_reference = {
-        "twitter": TwitterPublisher
-}
+publishers_reference = {"twitter": TwitterPublisher}
 
 
 def create_publishers(publisher_dict: dict) -> constants.publisher_types:

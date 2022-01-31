@@ -10,10 +10,9 @@ from twitchAPI.types import TwitchAuthorizationException
 class TwitchConsumer:
     client: Twitch = None
 
-    __logger: Logger = None
+    __logger: Logger
 
-    def __init__(self,
-                 credentials: dict):
+    def __init__(self, credentials: dict):
         try:
             client_id = credentials["client_id"]
             secret = credentials["secret"]
@@ -23,19 +22,18 @@ class TwitchConsumer:
             self.__logger.debug("Connection to Twitch successful")
             self.client = twitch
         except TwitchAuthorizationException as ta_e:
-            self.__logger.error(("Issues connecting to Twitch with provided "
-                                 "credentials."))
+            self.__logger.error(
+                ("Issues connecting to Twitch with provided " "credentials.")
+            )
             sys.exit(1)
         except ConnectionError as c_e:
-            self.__logger.error(("Not able to connect to API. Verify your "
-                                 "network."))
+            self.__logger.error(("Not able to connect to API. Verify your " "network."))
             sys.exit(1)
         except Exception as e:
             self.__logger.exception(e)
             sys.exit(1)
 
-    def get_all_streamers_info(self,
-                               streamers: dict) -> dict:
+    def get_all_streamers_info(self, streamers: dict) -> dict:
         try:
             twitch_users = list(streamers.keys())
             self.__logger.debug("Obtaining streamers info")
@@ -44,15 +42,13 @@ class TwitchConsumer:
             self.__logger.debug(streamers_info)
             return streamers_info["data"]
         except ConnectionError as c_e:
-            self.__logger.error(("Not able to connect to API. Verify your "
-                                 "network."))
+            self.__logger.error(("Not able to connect to API. Verify your " "network."))
             sys.exit(1)
         except Exception as e:
             self.__logger.exception(e)
             sys.exit(1)
 
-    def get_active_channels(self,
-                            streamers_info: dict) -> dict:
+    def get_active_channels(self, streamers_info: dict) -> dict:
         statuses = {}
         self.__logger.debug("Obtaining channels status")
         try:
@@ -66,8 +62,7 @@ class TwitchConsumer:
             self.__logger.debug(statuses)
             return statuses
         except ConnectionError as c_e:
-            self.__logger.error(("Not able to connect to API. Verify your "
-                                 "network."))
+            self.__logger.error(("Not able to connect to API. Verify your " "network."))
             sys.exit(1)
         except Exception as e:
             self.__logger.exception(e)

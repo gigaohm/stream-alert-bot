@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "stream-alert-bot"
-version = "0.2"
+version = "0.2.1"
 description = "Alerts when a streamer is live"
 authors = ["P. R. d. O. <d.ol.rod@tutanota.com>"]
 license = "GPL-3.0-only"
@@ -14,14 +14,28 @@ requests = "2.26.0"
 python-twitter = "3.5"
 PyYAML = "5.4.1"
 twitchAPI = "2.5.0"
-python-trovo = "0.1.3"
+python-trovo = "0.1.4"
 
 [tool.poetry.dev-dependencies]
-pycodestyle = "2.8.0"
 pytest = "6.2.5"
+black = "^22.1.0"
+mypy = "^0.931"
+types-PyYAML = "^6.0.4"
+types-requests = "^2.27.8"
 
 [tool.poetry.scripts]
 stream_alert_bot = "sab.__main__:main"
+
+[tool.mypy]
+python_version = 3.9
+
+[[tool.mypy.overrides]]
+module = [
+  "trovoApi.*",
+  "twitchAPI.*",
+  "twitter.*"
+]
+ignore_missing_imports = true
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

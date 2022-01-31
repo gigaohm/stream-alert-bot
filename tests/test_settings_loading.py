@@ -4,8 +4,7 @@ import pytest
 from sab import helpers
 
 
-MISC_PATH = "/".join([os.path.abspath("."),
-                     "tests/misc"])
+MISC_PATH = "/".join([os.path.abspath("."), "tests/misc"])
 
 
 def test_load_nonexisting_file():
