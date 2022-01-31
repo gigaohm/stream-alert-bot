@@ -29,19 +29,19 @@ NO_CUSTOM_TWITTER_EXPECTED_RESULT = (
 
 
 def test_tweet_message_complete_data(streamer_test_data):
-    result = helpers.generate_tweet_message(TWEET_SKELETON, streamer_test_data())
+    result = helpers.generate_message(TWEET_SKELETON, streamer_test_data())
     print(result)
     assert result == FULL_EXPECTED_RESULT
 
 
 def test_tweet_message_no_custom_name(streamer_test_data):
-    result = helpers.generate_tweet_message(TWEET_SKELETON, streamer_test_data(False))
+    result = helpers.generate_message(TWEET_SKELETON, streamer_test_data(False))
     print(result)
     assert result == NO_CUSTOM_EXPECTED_RESULT
 
 
 def test_tweet_message_no_twitter_handle(streamer_test_data):
-    result = helpers.generate_tweet_message(
+    result = helpers.generate_message(
         TWEET_SKELETON, streamer_test_data(True, False)
     )
     print(result)
@@ -49,7 +49,7 @@ def test_tweet_message_no_twitter_handle(streamer_test_data):
 
 
 def test_tweet_message_no_optional_data(streamer_test_data):
-    result = helpers.generate_tweet_message(
+    result = helpers.generate_message(
         TWEET_SKELETON, streamer_test_data(False, False)
     )
     print(result)
