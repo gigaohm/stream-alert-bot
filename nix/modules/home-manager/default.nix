@@ -49,18 +49,12 @@ in
         in attrsOf botSetup;
       default = [ ]; 
       example = literalExpression ''
-          [
-            { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock origin
-            {
-              id = "dcpihecpambacapedldabdbpakmachpb";
-              updateUrl = "https://raw.githubusercontent.com/iamadamdev/bypass-paywalls-chrome/master/updates.xml";
-            }
-            {
-              id = "aaaaaaaaaabbbbbbbbbbcccccccccc";
-              crxPath = "/home/share/extension.crx";
-              version = "1.0";
-            }
-          ]
+        {
+          twitch = {
+            settingsPath = /home/test/settings.yml
+            consumerType = twitch;
+          };
+        };
       '';
       description = "Bots configuration.";
     };
