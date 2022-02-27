@@ -10,11 +10,11 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
-requests = "2.26.0"
-python-twitter = "3.5"
-PyYAML = "5.4.1"
-twitchAPI = "2.5.0"
-python-trovo = "0.1.4"
+requests = "^2.26.0"
+python-twitter = "^3.5"
+PyYAML = "^5.4.1"
+twitchAPI = "^2.5.0"
+python-trovo = "^0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "6.2.5"

@@ -5,11 +5,11 @@ let
   inherit (python39Packages) black buildPythonPackage fetchPypi python-twitter pytest pytwitchapi pyyaml requests;
   python-trovo = buildPythonPackage rec {
     pname = "python-trovo";
-    version = "0.1.4";
+    version = "0.1.5";
 
     src = fetchPypi {
       inherit pname version;
-      sha256 = "sha256-N66Lrda/QvJIPF2FEHboiN2x22y5leXcXGhvlOJQpGU=";
+      sha256 = "sha256-JUJax9nk4NqpMMrbDmQhcy22GIqPha+K4tudQ98PvlE=";
     };
 
     propagatedBuildInputs = [ requests ];
