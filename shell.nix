@@ -1,20 +1,11 @@
-with import ./nix/pkgs.nix { };
+{ pkgs ? import ./nix/pkgs.nix { }}:
+
 let
-  requirements = import ./nix/requirements.nix;
+  inherit (pkgs) gnumake poetry mkShell;
+  requirements = (import ./nix/requirements.nix { refpkgs = pkgs; });
 
-  python-trovo = requirements.pythonPackages.buildPythonPackage rec {
-    pname = "python-trovo";
-    version = "0.1.4";
-
-    src = requirements.pythonPackages.fetchPypi {
-      inherit pname version;
-      sha256 = "sha256-N66Lrda/QvJIPF2FEHboiN2x22y5leXcXGhvlOJQpGU=";
-    };
-
-    propagatedBuildInputs = with requirements.pythonPackages; [ requests ];
-  };
   pythonEnvironment = requirements.python.buildEnv.override {
-    extraLibs = requirements.base ++ requirements.tests ++ requirements.dev ++ [python-trovo];
+    extraLibs = requirements.base ++ requirements.tests ++ requirements.dev;
   };
   extraPkgs = [ gnumake poetry ];
 in

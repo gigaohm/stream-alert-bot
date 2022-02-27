@@ -1,15 +1,18 @@
-with import ./nix/pkgs.nix {};
+{ pkgs ? import ./nix/pkgs.nix {}}:
+
 let
-  requirements = (import ./nix/requirements.nix);
-in
-requirements.pythonPackages.buildPythonApplication {
+  inherit (pkgs) lib python39Packages;
+  inherit (python39Packages) poetry-core;
+  requirements = (import ./nix/requirements.nix {});
+
+in requirements.pythonPackages.buildPythonApplication {
   pname = "stream-alert-bot";
   version = "0.2.1";
   format = "pyproject";
 
   src = lib.cleanSource ./.;
 
-  nativeBuildInputs = with pkgs.python39Packages; [ poetry-core ];
+  nativeBuildInputs = [ poetry-core ];
 
   propagatedBuildInputs = requirements.base;
 
