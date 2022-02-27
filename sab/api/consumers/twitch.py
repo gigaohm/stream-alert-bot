@@ -3,7 +3,6 @@ import sys
 
 from requests.exceptions import ConnectionError
 from twitchAPI.twitch import Twitch
-from twitchAPI.webhook import TwitchWebHook
 from twitchAPI.types import TwitchAuthorizationException
 
 
