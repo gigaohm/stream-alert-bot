@@ -42,5 +42,8 @@
       defaultPackage = pkgs.poetry2nix.mkPoetryApplication {
         inherit overrides projectDir;
       };
-    });
+    }) //
+    {
+      hmModule = import ./nix/modules/home-manager;
+    };
 }
