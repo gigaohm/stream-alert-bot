@@ -1,8 +1,8 @@
-{ refpkgs ? import ./pkgs.nix {}}:
+{ refpkgs }:
 
 let
   inherit (refpkgs) python39 python39Packages;
-  inherit (python39Packages) black buildPythonPackage fetchPypi python-twitter pytest pytwitchapi pyyaml requests;
+  inherit (python39Packages) black buildPythonApplication buildPythonPackage fetchPypi poetry-core python-twitter pytest pytwitchapi pyyaml requests;
   python-trovo = buildPythonPackage rec {
     pname = "python-trovo";
     version = "0.1.5";
@@ -16,8 +16,9 @@ let
   };
 in rec {
     python = python39;
+    buildMethod = buildPythonApplication;
 
-    pythonPackages = python39Packages;
+    nativeBuildInputs = [ poetry-core ];
 
     base = [
       python-trovo

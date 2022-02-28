@@ -7,42 +7,54 @@
     utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, poetry2nix, utils }: utils.lib.eachDefaultSystem (system:
+  outputs = { self, nixpkgs, poetry2nix, utils }:
     let
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [
-          poetry2nix.overlay
-        ];
-      };
-
-      customOverrides = self: super: {
-        python-twitter = super.python-twitter.overrideAttrs(old: {
-          buildInputs = old.buildInputs ++ [ self.pytest-runner ];
-        });
-      };
-
-      # General poetry settings
-      python = pkgs.python39;
+      # General project settings
+      name = "stream-alert-bot";
       projectDir = ./.;
-      overrides = pkgs.poetry2nix.overrides.withDefaults (customOverrides);
 
-      env = pkgs.poetry2nix.mkPoetryEnv {
-        inherit overrides python projectDir;
-      };
+    in
+    (utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [
+            poetry2nix.overlay
+            (nixpkgs.lib.composeExtensions poetry2nix.overlay (final: prev: {
+               ${name} = final.poetry2nix.mkPoetryApplication {
+                 inherit overrides projectDir;
+               };
+            }))
+          ];
+        };
 
-      # Other project settings
-      extraPkgs = with pkgs; [ gnumake poetry ];
+        # Needed to build python-twitter 
+        customOverrides = self: super: {
+          python-twitter = super.python-twitter.overrideAttrs(old: {
+            buildInputs = old.buildInputs ++ [ self.pytest-runner ];
+          });
+        };
+        overrides = pkgs.poetry2nix.overrides.withDefaults (customOverrides);
 
-    in {
-      devShell = pkgs.mkShell {
-        buildInputs = [ env ] ++ extraPkgs;
-      };
+        # Other project settings
+        extraPkgs = with pkgs; [ gnumake poetry ];
 
-      defaultPackage = pkgs.poetry2nix.mkPoetryApplication {
-        inherit overrides projectDir;
-      };
-    }) //
+      in rec {
+        packages.${name} = pkgs.${name};
+        defaultPackage = packages.${name};
+
+        apps.${name} = utils.lib.mkApp {
+          drv = packages.${name};
+          exePath = "/bin/stream_alert_bot";
+        };
+        defaultApp = apps.${name};
+
+        devShell = pkgs.mkShell {
+          inputsFrom = [ defaultPackage ];
+          buildInputs = extraPkgs;
+        };
+      }
+    )) //
     {
       hmModule = import ./nix/modules/home-manager;
     };
