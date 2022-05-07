@@ -22,6 +22,7 @@ black = "^22.1.0"
 mypy = "^0.931"
 types-PyYAML = "^6.0.4"
 types-requests = "^2.27.8"
+hatch-vcs = "^0.2.0"
 
 [tool.poetry.scripts]
 stream_alert_bot = "sab.__main__:main"
