@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    poetry2nix.url = "github:wolfangaukang/poetry2nix/overrides";
+    poetry2nix.url = "github:nix-community/poetry2nix";
     utils.url = "github:numtide/flake-utils";
   };
 
@@ -27,17 +27,6 @@
             }))
           ];
         };
-
-        # Needed to build python-twitter 
-        #customOverrides = self: super: {
-        #  python-twitter = super.python-twitter.overrideAttrs(old: {
-        #    buildInputs = old.buildInputs ++ [ self.pytest-runner ];
-        #  });
-        #  python-trovo = super.python-trovo.overrideAttrs(old: {
-        #    buildInputs = old.buildInputs ++ [ self.poetry ];
-        #  });
-        #};
-        #overrides = pkgs.poetry2nix.overrides.withDefaults (customOverrides);
 
         # Other project settings
         extraPkgs = with pkgs; [ gnumake poetry ];
