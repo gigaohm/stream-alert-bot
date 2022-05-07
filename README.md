@@ -39,6 +39,34 @@ Again, two ways to do it:
 
 Just throw the PR and I can check it :)
 
+### Issues using `nix build`?
+
+If there is a Python dependency not being built successfully, you should try checking the `nix-community/poetry2nix` repository
+and see any related issues. For example, when you see something like `ModuleNotFoundError: No module named 'pytest-runner'` when
+building `python-twitter`, you can do this to the `flake.nix` file, on a `let` section of the outputs:
+
+```nix
+  customOverrides = self: super: {
+    python-twitter = super.python-twitter.overrideAttrs(old: {
+      buildInputs = old.buildInputs ++ [ self.pytest-runner ];
+    });
+  };
+  overrides = pkgs.poetry2nix.overrides.withDefaults (customOverrides);
+
+  pkgs = import nixpkgs {
+    inherit system;
+    overlays = [
+      poetry2nix.overlay
+      (nixpkgs.lib.composeExtensions poetry2nix.overlay (final: prev: {
+         ${name} = final.poetry2nix.mkPoetryApplication {
+           inherit overrides projectDir;
+         };
+      }))
+    ];
+  };
+
+```
+
 ## Steps
 
 - On the `etc/` directory, there is the `settings-example.yml` file. It contains the whole configuration for the bot.

@@ -2,7 +2,7 @@
   description = "Alerts when a streamer is live";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-21.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     poetry2nix.url = "github:nix-community/poetry2nix";
     utils.url = "github:numtide/flake-utils";
   };
@@ -22,35 +22,27 @@
             poetry2nix.overlay
             (nixpkgs.lib.composeExtensions poetry2nix.overlay (final: prev: {
                ${name} = final.poetry2nix.mkPoetryApplication {
-                 inherit overrides projectDir;
+                 inherit projectDir;
                };
             }))
           ];
         };
-
-        # Needed to build python-twitter 
-        customOverrides = self: super: {
-          python-twitter = super.python-twitter.overrideAttrs(old: {
-            buildInputs = old.buildInputs ++ [ self.pytest-runner ];
-          });
-        };
-        overrides = pkgs.poetry2nix.overrides.withDefaults (customOverrides);
 
         # Other project settings
         extraPkgs = with pkgs; [ gnumake poetry ];
 
       in rec {
         packages.${name} = pkgs.${name};
-        defaultPackage = packages.${name};
+        packages.default = packages.${name};
 
         apps.${name} = utils.lib.mkApp {
           drv = packages.${name};
           exePath = "/bin/stream_alert_bot";
         };
-        defaultApp = apps.${name};
+        apps.default = apps.${name};
 
-        devShell = pkgs.mkShell {
-          inputsFrom = [ defaultPackage ];
+        devShells.default = pkgs.mkShell {
+          inputsFrom = [ apps.default ];
           buildInputs = extraPkgs;
         };
       }
