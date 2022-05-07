@@ -1,5 +1,7 @@
 # Stream Alert Bot
 
+[![status-badge](https://ci.codeberg.org/api/badges/wolfangaukang/stream-alert-bot/status.svg)](https://ci.codeberg.org/wolfangaukang/stream-alert-bot)
+
 This bot will indicate which streamers are live. It supports the following consumers (streaming platforms) and publishers (notification platforms):
 - Consumers
   - [Trovo](https://trovo.live)
