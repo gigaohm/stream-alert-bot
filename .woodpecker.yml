@@ -1,0 +1,28 @@
+pipeline:
+  verify-flake:
+    group: checks
+    when:
+      event: [ pull_request ]
+    image: nixos/nix:2.8.0
+    environment:
+    - NIXPKGS_ALLOW_UNFREE=1
+    commands:
+    - nix --version
+    - echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
+    - nix flake check path:.
+
+  poetry-checks:
+    group: checks 
+    when:
+      event: [ pull_request ]
+      branch: main
+    image: python:3.10
+    commands:
+    - python -V
+    - pip install poetry
+    - poetry config virtualenvs.create false
+    - poetry install
+    - poetry build
+    - poetry run pytest
+    - poetry run black .
+    - poetry run mypy .
