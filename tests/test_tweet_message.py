@@ -41,16 +41,12 @@ def test_tweet_message_no_custom_name(streamer_test_data):
 
 
 def test_tweet_message_no_twitter_handle(streamer_test_data):
-    result = helpers.generate_message(
-        TWEET_SKELETON, streamer_test_data(True, False)
-    )
+    result = helpers.generate_message(TWEET_SKELETON, streamer_test_data(True, False))
     print(result)
     assert result == NO_TWITTER_EXPECTED_RESULT
 
 
 def test_tweet_message_no_optional_data(streamer_test_data):
-    result = helpers.generate_message(
-        TWEET_SKELETON, streamer_test_data(False, False)
-    )
+    result = helpers.generate_message(TWEET_SKELETON, streamer_test_data(False, False))
     print(result)
     assert result == NO_CUSTOM_TWITTER_EXPECTED_RESULT
