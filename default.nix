@@ -6,7 +6,7 @@ let
 
 in requirements.buildMethod {
   pname = "stream-alert-bot";
-  version = "0.2.3";
+  version = "0.3.0";
   format = "pyproject";
 
   src = lib.cleanSource ./.;
