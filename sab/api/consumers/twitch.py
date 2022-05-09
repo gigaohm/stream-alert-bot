@@ -2,6 +2,7 @@ from logging import Logger, getLogger
 import sys
 
 from requests.exceptions import ConnectionError
+from typing import List
 from twitchAPI.twitch import Twitch
 from twitchAPI.types import TwitchAuthorizationException
 
@@ -36,7 +37,7 @@ class TwitchConsumer:
         try:
             twitch_users = list(streamers.keys())
             self.__logger.debug("Obtaining streamers info")
-            streamers_info = self.client.get_users(logins=twitch_users)
+            streamers_info = self.__get_users(twitch_users)
             self.__logger.debug("Obtained streamers info:")
             self.__logger.debug(streamers_info)
             return streamers_info["data"]
@@ -66,3 +67,21 @@ class TwitchConsumer:
         except Exception as e:
             self.__logger.exception(e)
             sys.exit(1)
+
+    # As pytwitchapi accepts 100 users as maximum, we need to regroup the whole list
+    # into groups of 100 elements and join the results
+    def __get_users(self, twitch_users: List[str]) -> dict:
+        streamers_groups = [
+            twitch_users[i : i + 100] for i in range(0, len(twitch_users), 100)
+        ]
+        streamers_info: dict = {}
+
+        for group in streamers_groups:
+            obtained_results = self.client.get_users(logins=group)
+            for key, value in obtained_results.items():
+                if key in streamers_info:
+                    streamers_info[key].extend(value)
+                else:
+                    streamers_info[key] = value
+
+        return streamers_info
