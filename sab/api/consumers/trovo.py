@@ -54,6 +54,15 @@ class TrovoConsumer:
         try:
             for streamer in streamers_info:
                 chid = streamer["channel_id"]
+                if chid == 0:
+                    self.__logger.warn(
+                        " ".join[
+                            "Username",
+                            streamer["username"],
+                            "has a channel_id 0. Ignoring.",
+                        ]
+                    )
+                    continue
                 live_info = self.client.get_channel_info_by_id(channel_id=chid)
                 # TODO: Add exception to TrovoApi error
                 if live_info["is_live"]:
