@@ -25,7 +25,7 @@
           }))
         ];
         pkgs = import nixpkgs { inherit system overlays; };
-        inherit (pkgs) gnumake poetry black;
+        inherit (pkgs) mkShell gnumake poetry black;
 
         # Other project settings
         extraPkgs = [ gnumake poetry ];
@@ -50,7 +50,7 @@
         };
         apps.default = apps.${name};
 
-        devShells.default = pkgs.mkShell {
+        devShells.default = mkShell {
           inputsFrom = [ apps.default ];
           buildInputs = extraPkgs;
         };
