@@ -25,10 +25,16 @@
           }))
         ];
         pkgs = import nixpkgs { inherit system overlays; };
-        inherit (pkgs) mkShell gnumake poetry black;
+        inherit (pkgs) mkShell gnumake poetry python3 black;
+        inherit (pkgs.poetry2nix) mkPoetryEnv;
 
         # Other project settings
         extraPkgs = [ gnumake poetry ];
+
+        devEnv = mkPoetryEnv {
+          inherit projectDir;
+          python = python3;
+        };
 
       in rec {
         packages.${name} = pkgs.${name};
@@ -51,7 +57,7 @@
         apps.default = apps.${name};
 
         devShells.default = mkShell {
-          inputsFrom = [ apps.default ];
+          inputsFrom = [ devEnv poetry python3 ];
           buildInputs = extraPkgs;
         };
       }
