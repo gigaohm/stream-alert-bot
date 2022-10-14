@@ -57,7 +57,7 @@
         apps.default = apps.${name};
 
         devShells.default = mkShell {
-          inputsFrom = [ devEnv poetry python3 ];
+          inputsFrom = [ devEnv poetry ];
           buildInputs = extraPkgs;
         };
       }
