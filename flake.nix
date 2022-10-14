@@ -28,9 +28,6 @@
         inherit (pkgs) mkShell gnumake poetry python3 black;
         inherit (pkgs.poetry2nix) mkPoetryEnv;
 
-        # Other project settings
-        extraPkgs = [ gnumake poetry ];
-
         devEnv = mkPoetryEnv {
           inherit projectDir;
           python = python3;
@@ -56,10 +53,7 @@
         };
         apps.default = apps.${name};
 
-        devShells.default = mkShell {
-          inputsFrom = [ devEnv poetry ];
-          buildInputs = extraPkgs;
-        };
+        devShells.default = mkShell { inputsFrom = [ devEnv poetry ]; };
       }
     )) //
     {
