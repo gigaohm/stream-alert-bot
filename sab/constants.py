@@ -38,4 +38,3 @@ CONSUMER_KEYS_TRANSLATION = {
 }
 POLLING_INTERVAL = 120
 TWEET_COUNT = 5
-MESSAGE_PATTERN = "".join([r"({\d+})?({", keyword, r"})({\d+})?"])
