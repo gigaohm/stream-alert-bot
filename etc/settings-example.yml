@@ -7,6 +7,8 @@ credentials:
                 consumer_secret: "test"
                 access_key: "test"
                 access_secret: "test"
+                # Although optional, this is useful for the duplicated tweet detection feature.
+                user: "test"
 # Interval to poll for results, in seconds. Default is 120
 polling_interval: 180
 # Message to tweet. Can surpass the character limit, but this will

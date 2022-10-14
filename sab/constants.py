@@ -26,6 +26,7 @@ SERVICES_KEYS = {
         ("consumer_secret", "Consumer Secret"),
         ("access_key", "Access Key"),
         ("access_secret", "Access Secret"),
+        ("user", "User"),
     ],
 }
 CONSUMER_KEYS_TRANSLATION = {

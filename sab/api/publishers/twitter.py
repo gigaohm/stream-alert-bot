@@ -6,7 +6,7 @@ from typing import List
 
 class TwitterPublisher:
     client: Api = None
-    __user: str = None
+    user: str = None
 
     __logger: Logger
 
@@ -16,7 +16,8 @@ class TwitterPublisher:
             consumer_secret = credentials["consumer_secret"]
             access_key = credentials["access_key"]
             access_secret = credentials["access_secret"]
-            # TODO: Obtain __user
+            if "user" in credentials:
+                self.user = credentials["user"]
             twitter = Api(
                 consumer_key=consumer_key,
                 consumer_secret=consumer_secret,
@@ -34,7 +35,7 @@ class TwitterPublisher:
 
     def post_message(self, message: str) -> bool:
         try:
-            if __user is None:
+            if self.user is None:
                 self.__logger.warn("User ID has not been provided. There could be duplicated tweets if you are using this on multiple instances.")
             elif self.__is_message_duplicated(message):
                 self.__logger.warn("Message is a duplicate. Not posting.")
@@ -52,7 +53,7 @@ class TwitterPublisher:
 
     def __is_message_duplicate(self, message: str) -> bool:
         try:
-            user = self.client.UsersLookup(screen_name=self.__user)
+            user = self.client.UsersLookup(screen_name=self.user)
             if len(user) == 0:
                 raise ValueError("The user name list is empty.")
             user_id = user[0].id
