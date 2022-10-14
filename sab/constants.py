@@ -26,8 +26,13 @@ SERVICES_KEYS = {
         ("consumer_secret", "Consumer Secret"),
         ("access_key", "Access Key"),
         ("access_secret", "Access Secret"),
-        ("user", "User"),
     ],
+}
+EXTRAS_KEYS = {
+    "twitter": [
+        ("user", str),
+        ("tweet_count", int)
+    ]
 }
 CONSUMER_KEYS_TRANSLATION = {
     "username": {"trovo": "username", "twitch": "user_name"},
