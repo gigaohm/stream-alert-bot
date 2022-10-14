@@ -3,14 +3,17 @@ from logging import Logger, getLogger
 from twitter import Api, TwitterError
 from typing import List
 
+from sab import constants
+
 
 class TwitterPublisher:
     client: Api = None
     twitter_id: str = None
+    tweet_count: int = constants.TWEET_COUNT
 
     __logger: Logger
 
-    def __init__(self, credentials: dict):
+    def __init__(self, credentials: dict, extra_settings: dict):
         try:
             consumer_key = credentials["consumer_key"]
             consumer_secret = credentials["consumer_secret"]
@@ -27,9 +30,9 @@ class TwitterPublisher:
             self.__logger = getLogger(("stream-alert-bot/api/publishers/" "twitter"))
             self.__logger.debug("Twitter connection generated")
             self.client = twitter
-            if "user" in credentials:
-                self.__logger.debug("Found user info on settings")
-                user_name = credentials["user"]
+            if "user" in extra_settings:
+                self.__logger.debug("Found user info on extra settings")
+                user_name = extra_settings["user"]
                 self.__logger.debug(
                     " ".join(["Obtaining Twitter ID for user", user_name])
                 )
@@ -39,6 +42,10 @@ class TwitterPublisher:
                 # We will always pick the first result
                 self.__logger.debug("Obtained user ID")
                 self.twitter_id = lookup_result[0].id
+            if "tweet_count" in extra_settings:
+                self.__logger.debug("Found tweet count on extra settings")
+                self.tweet_count = extra_settings["tweet_count"]
+
         except Exception as e:
             self.__logger.exception(e)
             sys.exit(1)
@@ -65,10 +72,9 @@ class TwitterPublisher:
 
     def __is_message_duplicate(self, message: str) -> bool:
         try:
-            # FIXME: See if it is needed to customize the count here
             latest_tweets = self.client.GetUserTimeline(
                 user_id=self.twitter_id,
-                count=10,
+                count=self.tweet_count,
                 include_rts=False,
                 trim_user=True,
                 exclude_replies=True,
