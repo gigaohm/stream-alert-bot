@@ -29,16 +29,28 @@ def verify_settings(settings: dict) -> bool:
 
     # Log warning for polling_interval
     if "polling_interval" not in settings:
-        logger.warn("".join(["Polling interval not provided. Will use default value (",
-                             constants.POLLING_INTERVAL,
-                             ")."]))
-    # Log warning for extras 
+        logger.warn(
+            "".join(
+                [
+                    "Polling interval not provided. Will use default value (",
+                    constants.POLLING_INTERVAL,
+                    ").",
+                ]
+            )
+        )
+    # Log warning for extras
     if "extras" not in settings:
         logger.warn(("Extras not provided. Will use default values."))
 
     # Now validating the content of the whole settings file
     for key, value in settings.items():
-        if key not in ["credentials", "polling_interval", "streamers", "message", "extras"]:
+        if key not in [
+            "credentials",
+            "polling_interval",
+            "streamers",
+            "message",
+            "extras",
+        ]:
             raise KeyError(
                 "".join(
                     [
@@ -166,14 +178,27 @@ def validate_extras(settings: dict) -> bool:
         # First validate the values from settings
         for key, value in settings.items():
             if key not in extras_keys:
-                raise KeyError(" ".join(["Provided key", key, "on extras is not valid"]))
+                raise KeyError(
+                    " ".join(["Provided key", key, "on extras is not valid"])
+                )
             # Then validate the subkeys
             for subkey, subvalue in value.items():
                 if subkey not in extras_keys[key]:
-                    raise KeyError(" ".join(["Provided subkey", subkey, "on", key, "is not valid"]))
+                    raise KeyError(
+                        " ".join(["Provided subkey", subkey, "on", key, "is not valid"])
+                    )
                 if type(subvalue) != extras_keys[key][subkey]:
-                    raise TypeError(" ".join(["Provided value for subkey", subkey, "is not of type", str(extras_keys[key][subkey])]))
-        logger.debug("Extras on the settings are valid")     
+                    raise TypeError(
+                        " ".join(
+                            [
+                                "Provided value for subkey",
+                                subkey,
+                                "is not of type",
+                                str(extras_keys[key][subkey]),
+                            ]
+                        )
+                    )
+        logger.debug("Extras on the settings are valid")
     except Exception as e:
         logger.exception(e)
 

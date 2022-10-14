@@ -22,7 +22,9 @@ def main():
         args.publishers, settings["credentials"]
     )
     polling_interval = (
-        settings["polling_interval"] if "polling_interval" in settings else constants.POLLING_INTERVAL
+        settings["polling_interval"]
+        if "polling_interval" in settings
+        else constants.POLLING_INTERVAL
     )
     extras = settings["extras"] if "extras" in settings else {}
     msg_skeleton = settings["message"]["text"]
