@@ -35,7 +35,21 @@ class TrovoConsumer:
             streamers_info = self.client.get_users(users=trovo_users)
             self.__logger.debug("Obtained streamers info:")
             self.__logger.debug(streamers_info)
-            return streamers_info["users"]
+            streamers = streamers_info["users"]
+            # Reap the user_id = 0 results
+            for streamer in streamers:
+                if int(streamer["user_id"]) == 0:
+                    self.__logger.warn(
+                        " ".join(
+                            [
+                                "Username",
+                                streamer["username"],
+                                "has a user_id 0. Ignoring.",
+                            ]
+                        )
+                    )
+                    streamers.remove(streamer)
+            return streamers
         except TrovoApiException as tr_e:
             self.__logger.error(
                 "".join(["Trovo API gave the following ", "error: ", tr_e.message])
