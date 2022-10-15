@@ -121,7 +121,7 @@ def generate_message(text: str, stream_info: dict) -> str:
     logger.debug("Generating Tweet Message")
     # Detecting key words
     for keyword in stream_info.keys():
-        pattern = "".join([r"({\d+})?({", keyword, r"})({\d+})?"]) 
+        pattern = "".join([r"({\d+})?({", keyword, r"})({\d+})?"])
         result = re.finditer(pattern, text)
         for match in result:
             old_value = match.group()
