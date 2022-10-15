@@ -70,7 +70,7 @@ class TwitterPublisher:
             sys.exit(1)
         return True
 
-    def __is_message_duplicate(self, message: str) -> bool:
+    def __is_message_duplicated(self, message: str) -> bool:
         try:
             latest_tweets = self.client.GetUserTimeline(
                 user_id=self.twitter_id,
