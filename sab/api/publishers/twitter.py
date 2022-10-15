@@ -80,7 +80,7 @@ class TwitterPublisher:
                 exclude_replies=True,
             )
             msg_to_post = message.split("\n")[0]
-            for tweet in tweets:
+            for tweet in latest_tweets:
                 if msg_to_post == tweet.full_text.split("\n")[0]:
                     return True
             return False
