@@ -35,7 +35,7 @@ class TrovoConsumer:
             streamers_info = self.client.get_users(users=trovo_users)
             self.__logger.debug("Obtained streamers info:")
             self.__logger.debug(streamers_info)
-            streamers = streamers_info["users"]
+            streamers = streamers_info.get("users")
             # Reap the user_id = 0 results
             for streamer in streamers:
                 if int(streamer["user_id"]) == 0:
@@ -48,7 +48,8 @@ class TrovoConsumer:
                             ]
                         )
                     )
-                    streamers.remove(streamer)
+                    # Ignoring this line as streamers is being recognized as a dict instead of list
+                    streamers.remove(streamer)  # type: ignore[attr-defined]
             return streamers
         except TrovoApiException as tr_e:
             self.__logger.error(
@@ -70,11 +71,13 @@ class TrovoConsumer:
                 chid = streamer["channel_id"]
                 if chid == 0:
                     self.__logger.warn(
-                        " ".join[
-                            "Username",
-                            streamer["username"],
-                            "has a channel_id 0. Ignoring.",
-                        ]
+                        " ".join(
+                            [
+                                "Username",
+                                streamer["username"],
+                                "has a channel_id 0. Ignoring.",
+                            ]
+                        )
                     )
                     continue
                 live_info = self.client.get_channel_info_by_id(channel_id=chid)

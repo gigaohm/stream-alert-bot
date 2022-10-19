@@ -33,7 +33,7 @@ def verify_settings(settings: dict) -> bool:
             "".join(
                 [
                     "Polling interval not provided. Will use default value (",
-                    constants.POLLING_INTERVAL,
+                    str(constants.POLLING_INTERVAL),
                     ").",
                 ]
             )
@@ -201,6 +201,7 @@ def validate_extras(settings: dict) -> bool:
         logger.debug("Extras on the settings are valid")
     except Exception as e:
         logger.exception(e)
+    return True
 
 
 """

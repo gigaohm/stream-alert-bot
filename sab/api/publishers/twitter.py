@@ -8,7 +8,7 @@ from sab import constants
 
 class TwitterPublisher:
     client: Api = None
-    twitter_id: str = None
+    twitter_id: str = ""
     tweet_count: int = constants.TWEET_COUNT
 
     __logger: Logger
@@ -52,7 +52,7 @@ class TwitterPublisher:
 
     def post_message(self, message: str) -> bool:
         try:
-            if self.twitter_id is None:
+            if self.twitter_id == "":
                 self.__logger.warn(
                     "User ID has not been provided. There could be duplicated tweets if you are using this on multiple instances."
                 )
@@ -83,7 +83,6 @@ class TwitterPublisher:
             for tweet in latest_tweets:
                 if msg_to_post == tweet.full_text.split("\n")[0]:
                     return True
-            return False
 
         except TwitterError as tt_e:
             # Twitter Errors are all accumulated into a single error
@@ -91,6 +90,7 @@ class TwitterPublisher:
         except Exception as e:
             self.__logger.exception(e)
             sys.exit(1)
+        return False
 
     def __handle_twitter_errors(self, twitter_error: TwitterError) -> None:
         # Twitter Errors are all accumulated into a single error
