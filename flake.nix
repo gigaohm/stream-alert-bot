@@ -25,7 +25,7 @@
           }))
         ];
         pkgs = import nixpkgs { inherit system overlays; };
-        inherit (pkgs) mkShell gnumake poetry python3 black;
+        inherit (pkgs) mkShell black gnumake mypy poetry python3;
         inherit (pkgs.poetry2nix) mkPoetryEnv;
 
         devEnv = mkPoetryEnv {
@@ -50,10 +50,17 @@
             type = "app";
             program = "${black}/bin/black";
           };
+          "scan" = {
+            type = "app";
+            program = "${mypy}/bin/mypy";
+          };
         };
         apps.default = apps.${name};
 
-        devShells.default = mkShell { inputsFrom = [ devEnv poetry ]; };
+        devShells.default = mkShell {
+          inputsFrom = [ devEnv poetry ];
+          buildInputs = [ poetry ];
+        };
       }
     )) //
     {
