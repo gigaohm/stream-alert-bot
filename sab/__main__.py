@@ -2,7 +2,7 @@ import logging
 import sys
 import time
 
-from sab import api, helpers, validators
+from sab import api, constants, helpers, validators
 
 
 def main():
@@ -22,14 +22,17 @@ def main():
         args.publishers, settings["credentials"]
     )
     polling_interval = (
-        settings["polling_interval"] if "polling_interval" in settings else 120
+        settings["polling_interval"]
+        if "polling_interval" in settings
+        else constants.POLLING_INTERVAL
     )
+    extras = settings["extras"] if "extras" in settings else {}
     msg_skeleton = settings["message"]["text"]
     streamers = helpers.transform_streamers_to_dict(settings["streamers"])
 
     # Generate connection to consumer/publishers
-    consumer_client = api.create_consumer(args.consumer, consumer_creds)
-    publishers = api.create_publishers(publisher_creds)
+    consumer_client = api.create_consumer(args.consumer, consumer_creds, extras)
+    publishers = api.create_publishers(publisher_creds, extras)
 
     # Initial livestream info
     logger.debug("Generating initial state of livestreams")

@@ -29,11 +29,28 @@ def verify_settings(settings: dict) -> bool:
 
     # Log warning for polling_interval
     if "polling_interval" not in settings:
-        logger.warn(("Polling interval not provided. Will use default value " "(120)."))
+        logger.warn(
+            "".join(
+                [
+                    "Polling interval not provided. Will use default value (",
+                    str(constants.POLLING_INTERVAL),
+                    ").",
+                ]
+            )
+        )
+    # Log warning for extras
+    if "extras" not in settings:
+        logger.warn(("Extras not provided. Will use default values."))
 
     # Now validating the content of the whole settings file
     for key, value in settings.items():
-        if key not in ["credentials", "polling_interval", "streamers", "message"]:
+        if key not in [
+            "credentials",
+            "polling_interval",
+            "streamers",
+            "message",
+            "extras",
+        ]:
             raise KeyError(
                 "".join(
                     [
@@ -42,7 +59,7 @@ def verify_settings(settings: dict) -> bool:
                         (
                             ") is not one of the following: "
                             "credentials, polling_interval, "
-                            "message, streamers"
+                            "message, streamers, extras"
                         ),
                     ]
                 )
@@ -57,6 +74,8 @@ def verify_settings(settings: dict) -> bool:
                 validate_streamers(value)
             elif key == "message":
                 validate_message(value)
+            elif key == "extras":
+                validate_extras(value)
             else:
                 raise ValueError(
                     "".join(
@@ -145,6 +164,43 @@ def validate_service_credentials(service_name: str, credentials: dict) -> bool:
             credentials,
         )
     logger.debug(" ".join([capitalized_service_name, "credentials are valid"]))
+    return True
+
+
+"""
+POLLING INTERVAL VALIDATOR
+"""
+
+
+def validate_extras(settings: dict) -> bool:
+    try:
+        extras_keys = constants.EXTRAS_KEYS
+        # First validate the values from settings
+        for key, value in settings.items():
+            if key not in extras_keys:
+                raise KeyError(
+                    " ".join(["Provided key", key, "on extras is not valid"])
+                )
+            # Then validate the subkeys
+            for subkey, subvalue in value.items():
+                if subkey not in extras_keys[key]:
+                    raise KeyError(
+                        " ".join(["Provided subkey", subkey, "on", key, "is not valid"])
+                    )
+                if type(subvalue) != extras_keys[key][subkey]:
+                    raise TypeError(
+                        " ".join(
+                            [
+                                "Provided value for subkey",
+                                subkey,
+                                "is not of type",
+                                str(extras_keys[key][subkey]),
+                            ]
+                        )
+                    )
+        logger.debug("Extras on the settings are valid")
+    except Exception as e:
+        logger.exception(e)
     return True
 
 

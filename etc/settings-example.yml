@@ -8,6 +8,11 @@ credentials:
                 access_key: "test"
                 access_secret: "test"
 # Interval to poll for results, in seconds. Default is 120
+extras:
+        twitter:
+                # Although optional, this is useful for the duplicated tweet detection feature.
+                user: "test"
+                tweet_count: 10
 polling_interval: 180
 # Message to tweet. Can surpass the character limit, but this will
 # mean the tweet will be divided into other tweets after surpassing the limit.

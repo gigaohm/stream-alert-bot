@@ -28,6 +28,7 @@ SERVICES_KEYS = {
         ("access_secret", "Access Secret"),
     ],
 }
+EXTRAS_KEYS = {"twitter": {"user": str, "tweet_count": int}}
 CONSUMER_KEYS_TRANSLATION = {
     "username": {"trovo": "username", "twitch": "user_name"},
     "userlogin": {"trovo": "username", "twitch": "user_login"},
@@ -35,3 +36,5 @@ CONSUMER_KEYS_TRANSLATION = {
     "title": {"trovo": "live_title", "twitch": "title"},
     "url": {"trovo": "trovo.live/", "twitch": "twitch.tv/"},
 }
+POLLING_INTERVAL = 120
+TWEET_COUNT = 5
