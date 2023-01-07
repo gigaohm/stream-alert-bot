@@ -36,5 +36,6 @@ CONSUMER_KEYS_TRANSLATION = {
     "title": {"trovo": "live_title", "twitch": "title"},
     "url": {"trovo": "trovo.live/", "twitch": "twitch.tv/"},
 }
+REPORT_MAX_TIME_INTERVAL = 600
 POLLING_INTERVAL = 120
 TWEET_COUNT = 5
