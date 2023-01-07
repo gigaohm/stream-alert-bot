@@ -38,6 +38,19 @@ def verify_settings(settings: dict) -> bool:
                 ]
             )
         )
+
+    # Log warning for report_max_time_interval
+    if "report_max_time_interval" not in settings:
+        logger.warn(
+            "".join(
+                [
+                    "Max tolerated time between intervals not provided. Will use default value (",
+                    str(constants.REPORT_MAX_TIME_INTERVAL),
+                    ").",
+                ]
+            )
+        )
+
     # Log warning for extras
     if "extras" not in settings:
         logger.warn(("Extras not provided. Will use default values."))
@@ -47,6 +60,7 @@ def verify_settings(settings: dict) -> bool:
         if key not in [
             "credentials",
             "polling_interval",
+            "report_max_time_interval",
             "streamers",
             "message",
             "extras",
@@ -59,6 +73,7 @@ def verify_settings(settings: dict) -> bool:
                         (
                             ") is not one of the following: "
                             "credentials, polling_interval, "
+                            "report_max_time_interval, "
                             "message, streamers, extras"
                         ),
                     ]
@@ -70,6 +85,8 @@ def verify_settings(settings: dict) -> bool:
                 validate_credentials(value)
             elif key == "polling_interval":
                 validate_polling_interval(value)
+            elif key == "report_max_time_interval":
+                validate_report_max_time_interval(value)
             elif key == "streamers":
                 validate_streamers(value)
             elif key == "message":
@@ -168,7 +185,7 @@ def validate_service_credentials(service_name: str, credentials: dict) -> bool:
 
 
 """
-POLLING INTERVAL VALIDATOR
+EXTRAS VALIDATOR
 """
 
 
@@ -216,6 +233,28 @@ def validate_polling_interval(interval: int) -> bool:
         raise ValueError("Provided polling value is lower or equal to 0.")
     logger.debug(
         "".join(["Polling interval on the settings is valid (", str(interval), ")"])
+    )
+    return True
+
+
+"""
+REPORT MAX TOLERATED INTERVAL VALIDATOR
+"""
+
+
+def validate_report_max_time_interval(interval: int) -> bool:
+    if not isinstance(interval, int):
+        raise ValueError("Provided interval value is not an integer.")
+    if interval <= 0:
+        raise ValueError("Provided interval value is lower or equal to 0.")
+    logger.debug(
+        "".join(
+            [
+                "Provided tolerated interval on the settings is valid (",
+                str(interval),
+                ")",
+            ]
+        )
     )
     return True
 

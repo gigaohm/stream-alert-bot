@@ -39,7 +39,20 @@ Again, two ways to do it:
 - Create an environment with `poetry shell`
 - If using Nix, you can run `nix-shell` or `nix develop` if using flakes
 
-Just throw the PR and I can check it :)
+In any of both cases, you can create a quick file at the root of the repo with the following content:
+```python
+#!/usr/bin/env python3
+
+import sys
+
+from sab.__main__ import main
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+```
+
+Just throw the PR so I can check it :)
 
 ### Issues using `nix build`?
 
