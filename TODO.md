@@ -6,6 +6,6 @@ Wishlist
   - [ ] List of supported publishers
     - [ ] Twitter
   - [ ] Handle list of publishers
-- [ ] Add time for each stream check report
+- [x] Add time for each stream check report
 - [ ] Add support to Mastodon as publisher
 - [ ] Adapt twitch code to pytwitchapi [v3](https://pytwitchapi.readthedocs.io/en/latest/v3-migration.html)
