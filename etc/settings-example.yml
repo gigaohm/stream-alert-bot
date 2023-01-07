@@ -13,7 +13,12 @@ extras:
                 # Although optional, this is useful for the duplicated tweet detection feature.
                 user: "test"
                 tweet_count: 10
+# (Optional) Determines how much time (in seconds) to wait when a report is created (default value: 120)
 polling_interval: 180
+# Option
+# (Optional) Determines how much time (in seconds) to tolerate between reports (default value: 600)
+# Useful for when you computer suspends and you want to avoid posting streams way after its start time.
+report_max_time_interval: 900
 # Message to tweet. Can surpass the character limit, but this will
 # mean the tweet will be divided into other tweets after surpassing the limit.
 # Accepts the following keywords:
