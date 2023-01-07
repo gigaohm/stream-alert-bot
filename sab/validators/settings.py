@@ -73,8 +73,8 @@ def verify_settings(settings: dict) -> bool:
                         (
                             ") is not one of the following: "
                             "credentials, polling_interval, "
-                            "report_max_time_interval, ",
-                            "message, streamers, extras",
+                            "report_max_time_interval, "
+                            "message, streamers, extras"
                         ),
                     ]
                 )
