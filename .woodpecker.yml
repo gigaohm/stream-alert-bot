@@ -16,7 +16,7 @@ pipeline:
     when:
       event: [ pull_request ]
       branch: main
-    image: python:3.10
+    image: python:3.12
     commands:
     - python -V
     - pip install poetry
