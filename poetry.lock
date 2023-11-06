@@ -148,11 +148,11 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "hatch-vcs"
-version = "0.3.0"
+version = "0.4.0"
 description = "Hatch plugin for versioning with your preferred VCS"
 category = "dev"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 
 [package.dependencies]
 hatchling = ">=1.1.0"
@@ -505,7 +505,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "b67da1a63e678fa837a215cd5bd25c8821c30507c0eea737a5a57b1b68b3a539"
+content-hash = "937073c5b24a5c574c12f0e7c352b5298bafaa0a3a62d15ea7a71e3cf7746978"
 
 [metadata.files]
 aiohttp = [
@@ -727,8 +727,8 @@ future = [
     {file = "future-0.18.2.tar.gz", hash = "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"},
 ]
 hatch-vcs = [
-    {file = "hatch_vcs-0.3.0-py3-none-any.whl", hash = "sha256:60ce59a3fa4664057e4a858b6a96ab0b9dec21bf8f562f836139315bb361be8c"},
-    {file = "hatch_vcs-0.3.0.tar.gz", hash = "sha256:cec5107cfce482c67f8bc96f18bbc320c9aa0d068180e14ad317bbee5a153fee"},
+    {file = "hatch_vcs-0.4.0-py3-none-any.whl", hash = "sha256:b8a2b6bee54cf6f9fc93762db73890017ae59c9081d1038a41f16235ceaf8b2c"},
+    {file = "hatch_vcs-0.4.0.tar.gz", hash = "sha256:093810748fe01db0d451fabcf2c1ac2688caefd232d4ede967090b1c1b07d9f7"},
 ]
 hatchling = [
     {file = "hatchling-1.12.2-py3-none-any.whl", hash = "sha256:d3b2f89719bf5200701cca855ae7b9c5d03ecb8ca948a513c748e4af122604ec"},
