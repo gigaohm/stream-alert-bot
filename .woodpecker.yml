@@ -3,7 +3,7 @@ pipeline:
     group: checks
     when:
       event: [ pull_request ]
-    image: nixos/nix:2.12.0
+    image: nixos/nix:2.21.1
     environment:
     - NIXPKGS_ALLOW_UNFREE=1
     commands:
