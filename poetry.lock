@@ -148,15 +148,15 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "hatch-vcs"
-version = "0.3.0"
+version = "0.5.0"
 description = "Hatch plugin for versioning with your preferred VCS"
 category = "dev"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.9"
 
 [package.dependencies]
 hatchling = ">=1.1.0"
-setuptools-scm = ">=6.4.0"
+setuptools-scm = ">=8.2.0"
 
 [[package]]
 name = "hatchling"
@@ -387,21 +387,21 @@ testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (
 
 [[package]]
 name = "setuptools-scm"
-version = "7.1.0"
+version = "10.2.1"
 description = "the blessed package to manage your versions by scm tags"
 category = "dev"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 
 [package.dependencies]
-packaging = ">=20.0"
+packaging = ">=20"
 setuptools = "*"
-tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}
-typing-extensions = "*"
+tomli = {version = ">=1", markers = "python_version < \"3.11\""}
+typing-extensions = {version = ">=4.1", markers = "python_version < \"3.11\""}
+vcs-versioning = ">=2.0.0.dev0,<3"
 
 [package.extras]
-test = ["pytest (>=6.2)", "virtualenv (>20)"]
-toml = ["setuptools (>=42)"]
+rich = ["rich (>=13)"]
 
 [[package]]
 name = "six"
@@ -483,6 +483,19 @@ secure = ["certifi", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "ipaddress", "p
 socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
+name = "vcs-versioning"
+version = "2.2.2"
+description = "the blessed package to manage your versions by vcs metadata"
+category = "dev"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+packaging = ">=20"
+tomli = {version = ">=1", markers = "python_version < \"3.11\""}
+typing-extensions = {version = ">=4.1", markers = "python_version < \"3.11\""}
+
+[[package]]
 name = "websockets"
 version = "10.4"
 description = "An implementation of the WebSocket Protocol (RFC 6455 & 7692)"
@@ -505,7 +518,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "b67da1a63e678fa837a215cd5bd25c8821c30507c0eea737a5a57b1b68b3a539"
+content-hash = "65463e35f51c3bbdd226c5709744971e1b416d3ee25e4893c85205ab45c196c6"
 
 [metadata.files]
 aiohttp = [
@@ -727,8 +740,8 @@ future = [
     {file = "future-0.18.2.tar.gz", hash = "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"},
 ]
 hatch-vcs = [
-    {file = "hatch_vcs-0.3.0-py3-none-any.whl", hash = "sha256:60ce59a3fa4664057e4a858b6a96ab0b9dec21bf8f562f836139315bb361be8c"},
-    {file = "hatch_vcs-0.3.0.tar.gz", hash = "sha256:cec5107cfce482c67f8bc96f18bbc320c9aa0d068180e14ad317bbee5a153fee"},
+    {file = "hatch_vcs-0.5.0-py3-none-any.whl", hash = "sha256:b49677dbdc597460cc22d01b27ab3696f5e16a21ecf2700fb01bc28e1f2a04a7"},
+    {file = "hatch_vcs-0.5.0.tar.gz", hash = "sha256:0395fa126940340215090c344a2bf4e2a77bcbe7daab16f41b37b98c95809ff9"},
 ]
 hatchling = [
     {file = "hatchling-1.12.2-py3-none-any.whl", hash = "sha256:d3b2f89719bf5200701cca855ae7b9c5d03ecb8ca948a513c748e4af122604ec"},
@@ -945,8 +958,8 @@ setuptools = [
     {file = "setuptools-65.6.3.tar.gz", hash = "sha256:a7620757bf984b58deaf32fc8a4577a9bbc0850cf92c20e1ce41c38c19e5fb75"},
 ]
 setuptools-scm = [
-    {file = "setuptools_scm-7.1.0-py3-none-any.whl", hash = "sha256:73988b6d848709e2af142aa48c986ea29592bbcfca5375678064708205253d8e"},
-    {file = "setuptools_scm-7.1.0.tar.gz", hash = "sha256:6c508345a771aad7d56ebff0e70628bf2b0ec7573762be9960214730de278f27"},
+    {file = "setuptools_scm-10.2.1-py3-none-any.whl", hash = "sha256:b7c82f4102d389ee57dc66ccdb4f9b4bca3c40ba83b43f1f63d68ccd72db2580"},
+    {file = "setuptools_scm-10.2.1.tar.gz", hash = "sha256:4fa7dd82cf8c800df59c9a288c90299b1657ff1ecfc3f5cc00287c5dbf5e27a9"},
 ]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
@@ -978,6 +991,10 @@ typing-extensions = [
 urllib3 = [
     {file = "urllib3-1.26.13-py2.py3-none-any.whl", hash = "sha256:47cc05d99aaa09c9e72ed5809b60e7ba354e64b59c9c173ac3018642d8bb41fc"},
     {file = "urllib3-1.26.13.tar.gz", hash = "sha256:c083dd0dce68dbfbe1129d5271cb90f9447dea7d52097c6e0126120c521ddea8"},
+]
+vcs-versioning = [
+    {file = "vcs_versioning-2.2.2-py3-none-any.whl", hash = "sha256:fe7fb216f8780a5516e7864a9333aacb1b70015b087a9be3918da76ef2760808"},
+    {file = "vcs_versioning-2.2.2.tar.gz", hash = "sha256:4ac4ded78720cdb4d0291ae58ace87e1e9201912e1023f3029c6cce5c9152cfb"},
 ]
 websockets = [
     {file = "websockets-10.4-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:d58804e996d7d2307173d56c297cf7bc132c52df27a3efaac5e8d43e36c21c48"},
