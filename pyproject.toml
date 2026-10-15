@@ -17,7 +17,7 @@ twitchAPI = "^2.5"
 python-trovo = "^0.1"
 
 [tool.poetry.dev-dependencies]
-pytest = "^7.2"
+pytest = "^9.0.0"
 black = "^22.12"
 mypy = "^0.991"
 types-PyYAML = "^6.0"
